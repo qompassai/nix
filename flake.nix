@@ -1,7 +1,6 @@
 # ~/.dotfiles/flake.nix
 # ---------------------
 # Copyright (C) 2025 Qompass AI, All rights reserved
-
 {
   environment.sessionVariables = rec {
     XDG_CACHE_HOME = "$HOME/.cache";
@@ -50,10 +49,8 @@
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
   };
   
-  # Optional: Set up better SSH agent management via systemd
   programs.ssh.startAgent = true;
   
-  # Optional: For NVIDIA-specific settings
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = true;
@@ -61,7 +58,6 @@
     nvidiaSettings = true;
   };
 }
-
 
 {
   inputs = {
@@ -78,26 +74,31 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprland, nixos-hyprland, ... }@inputs: {
+   outputs = { self, nixpkgs, home-manager, hyprland, nixos-hyprland, ... }@inputs:
+  let
+    username = "phaedrus";
+    hostname = "primo";
+  in
+  {
     nixosConfigurations = {
-      primo = nixpkgs.lib.nixosSystem {
+      "${hostname}" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs username hostname; };
         modules = [
           ./configuration.nix
           home-manager.nixosModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.phaedrus = import ./home.nix;
+            home-manager.users.${username} = import ./home.nix;
           }
         ];
       };
     };
 
     homeConfigurations = {
-      "phaedrus@primo" = home-manager.lib.homeManagerConfiguration {  # Use "username@hostname" format
+      "${username}@${hostname}" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = { inherit inputs; };
+        extraSpecialArgs = { inherit inputs username hostname; };
         modules = [
           ./home.nix
         ];
@@ -105,4 +106,3 @@
     };
   };
 }
-
