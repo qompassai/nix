@@ -44,25 +44,25 @@ echo "$NOTE Ensure In Home Directory"
 cd || exit
 echo "-----"
 backupname=$(date "+%Y-%m-%d-%H-%M-%S")
-if [ -d "NixOS-Hyprland" ]; then
-    echo "$NOTE NixOS-Hyprland exists, backing up to NixOS-Hyprland-backups directory."
-    if [ -d "NixOS-Hyprland-backups" ]; then
+if [ -d "nix" ]; then
+    echo "$NOTE qnix exists, backing up to qnix-backups directory."
+    if [ -d ".qnix-backup" ]; then
         echo "Moving current version of NixOS-Hyprland to backups directory."
-        sudo mv "$HOME"/NixOS-Hyprland NixOS-Hyprland-backups/"$backupname"
+        sudo mv "$HOME"/.qnix .qnix-backup/"$backupname"
         sleep 1
     else
         echo "$NOTE Creating the backups directory & moving qnix to it."
-        mkdir -p NixOS-Hyprland-backups
-        sudo mv "$HOME"/NixOS-Hyprland NixOS-Hyprland-backups/"$backupname"
+        mkdir -p qnix-backups
+        sudo mv "$HOME"/.qnix .qnix-backups/"$backupname"
         sleep 1
     fi
 else
     echo "$OK Thank you for choosing Qompass AI for Nix"
 fi
 echo "-----"
-echo "$NOTE Cloning & Entering NixOS-Hyprland Repository"
-git clone --depth 1 https://github.com/qompassai/nix.git ~/NixOS-Hyprland
-cd ~/NixOS-Hyprland || exit
+echo "$NOTE Cloning & Entering Qompass Nix Repository"
+git clone --depth 1 https://github.com/qompassai/nix.git ~/.qnix
+cd ~/.qnix || exit
 printf "\n%.0s" {1..2}
 if hostnamectl | grep -q 'Chassis: vm'; then
     echo "${NOTE} Your system is running on a VM. Enabling guest services.."
@@ -144,25 +144,20 @@ printf "\n%.0s" {1..2}
 echo "-----"
 printf "\n%.0s" {1..1}
 NIX_CONFIG="experimental-features = nix-command flakes"
-sudo nixos-rebuild switch --flake ~/NixOS-Hyprland/#"${hostName}"
+sudo nixos-rebuild switch --flake ~/.qnix/#"${hostName}"
 echo "-----"
 printf "\n%.0s" {1..2}
-
 # for initial zsh
 # Check if ~/.zshrc and  exists, create a backup, and copy the new configuration
 if [ -f "$HOME/.zshrc" ]; then
     cp -b "$HOME/.zshrc" "$HOME/.zshrc-backup" || true
 fi
-
 cp -r 'assets/.zshrc' ~/
-
 printf "Installing GTK-Themes and Icons..\n"
-
 if [ -d "GTK-themes-icons" ]; then
     echo "$NOTE GTK themes and Icons directory exist..deleting..."
     rm -rf "GTK-themes-icons"
 fi
-
 echo "$NOTE Cloning GTK themes and Icons repository..."
 if git clone --depth 1 https://github.com/JaKooLit/GTK-themes-icons.git ; then
     cd GTK-themes-icons
@@ -173,11 +168,8 @@ if git clone --depth 1 https://github.com/JaKooLit/GTK-themes-icons.git ; then
 else
     echo "$ERROR Download failed for GTK themes and Icons.."
 fi
-
 echo "-----"
 printf "\n%.0s" {1..2}
-
-# Check for existing configs and copy if does not exist
 for DIR1 in gtk-3.0 Thunar xfce4; do
     DIRPATH=~/.config/$DIR1
     if [ -d "$DIRPATH" ]; then
@@ -187,39 +179,31 @@ for DIR1 in gtk-3.0 Thunar xfce4; do
         cp -r assets/$DIR1 ~/.config/ && echo "Copy $DIR1 completed!" || echo "Error: Failed to copy $DIR1 config files."
     fi
 done
-
 echo "-----"
 printf "\n%.0s" {1..3}
-
-# Clean up
-# GTK Themes and Icons
 if [ -d "GTK-themes-icons" ]; then
     echo "$NOTE GTK themes and Icons directory exist..deleting..."
     rm -rf "GTK-themes-icons"
 fi
-
 echo "-----"
 printf "\n%.0s" {1..3}
-
-
 printf "$NOTE Downloading Hyprland dots from main to HOME directory..\n"
-if [ -d ~/Hyprland-Dots ]; then
-    cd ~/Hyprland-Dots
+if [ -d ~/.config ]; then
+    cd ~/.config
     git stash
     git pull
     chmod +x copy.sh
     ./copy.sh
 else
-    if git clone --depth 1 https://github.com/JaKooLit/Hyprland-Dots ~/Hyprland-Dots; then
-        cd ~/Hyprland-Dots || exit 1
+    if git clone --depth 1 https://github.com/qompassai/dotfiles ~/.qdf; then
+        cd ~/.qdf || exit 1
         chmod +x copy.sh
         ./copy.sh
     else
-        echo -e "$ERROR Can't download Hyprland-Dots"
+        echo -e "$ERROR Can't download Qompass Dot Files"
     fi
 fi
-cd ~/qnix
-
+cd ~/.qnix
 if [ ! -f "$HOME/.config/fastfetch/nixos.png" ]; then
     cp -r assets/fastfetch "$HOME/.config/"
 fi
