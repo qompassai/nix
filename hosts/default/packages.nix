@@ -1,5 +1,6 @@
-# 💫 https://github.com/JaKooLit 💫 #
-# Packages and Fonts config including the "programs" options
+# qompassai/nix/hosts/default/package.nix
+# ---------------------------------------------
+# Copyright (C) 2025 Qompass AI, All rights reserved
 
 { pkgs, inputs, ...}: let
 
@@ -7,7 +8,7 @@
     ps:
       with ps; [
         requests
-        pyquery # needed for hyprland-dots Weather script
+        pyquery
         ]
     );
 
@@ -16,7 +17,6 @@
   nixpkgs.config.allowUnfree = true;
   
   environment.systemPackages = (with pkgs; [
-  # System Packages
     bc
     baobab
     btrfs-progs
@@ -26,13 +26,13 @@
     duf
     findutils
     ffmpeg   
-    glib #for gsettings to work
+    glib
     gsettings-qt
     git
     killall  
     libappindicator
     libnotify
-    openssl #required by Rainbow borders
+    openssl
     pciutils
     vim
     wget
@@ -47,19 +47,19 @@
     #(ags.overrideAttrs (oldAttrs: { inherit (oldAttrs) pname; version = "1.8.2"; }))
     ags # desktop overview  
     btop
-    brightnessctl # for brightness control
+    brightnessctl
     cava
     cliphist
     loupe
     gnome-system-monitor
     grim
-    gtk-engine-murrine #for gtk themes
+    gtk-engine-murrine
     hypridle
     imagemagick 
     inxi
     jq
     kitty
-    libsForQt5.qtstyleplugin-kvantum #kvantum
+    libsForQt5.qtstyleplugin-kvantum
     networkmanagerapplet
     nwg-displays
     nwg-look
@@ -71,7 +71,7 @@
     libsForQt5.qt5ct
     kdePackages.qt6ct
     kdePackages.qtwayland
-    kdePackages.qtstyleplugin-kvantum #kvantum
+    kdePackages.qtstyleplugin-kvantum
     rofi-wayland
     slurp
     swappy
@@ -124,7 +124,7 @@
 	  firefox.enable = true;
 	  git.enable = true;
     nm-applet.indicator = true;
-    #neovim.enable = true;
+    neovim.enable = true;
 
 	  thunar.enable = true;
 	  thunar.plugins = with pkgs.xfce; [
@@ -137,12 +137,12 @@
 	
     virt-manager.enable = false;
     
-    #steam = {
-    #  enable = true;
-    #  gamescopeSession.enable = true;
-    #  remotePlay.openFirewall = true;
-    #  dedicatedServer.openFirewall = true;
-    #};
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+    };
     
     xwayland.enable = true;
 
@@ -157,7 +157,6 @@
 	
   };
 
-  # Extra Portal Configuration
   xdg.portal = {
     enable = true;
     wlr.enable = false;
