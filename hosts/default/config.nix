@@ -10,7 +10,7 @@
   imports = [
     ./hardware.nix
     ./users.nix
-    ./packages-fonts.nix
+    ./packages.nix
     ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
     ../../modules/nv-prime.nix
@@ -107,7 +107,7 @@
   networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
 
   
-  #time.timeZone = "Asia/Seoul"; # Set local timezone
+  time.timeZone = "America/Los_Angeles";
 
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -226,8 +226,8 @@
   #  disabledDefaultBackends = [ "escl" ];
   #};
 
-  hardware.logitech.wireless.enable = false;
-  hardware.logitech.wireless.enableGraphical = false;
+  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true;
 
   hardware.pulseaudio.enable = false; # stable branch
 

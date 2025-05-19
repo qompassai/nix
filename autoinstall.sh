@@ -159,8 +159,8 @@ if [ -d "GTK-themes-icons" ]; then
     rm -rf "GTK-themes-icons"
 fi
 echo "$NOTE Cloning GTK themes and Icons repository..."
-if git clone --depth 1 https://github.com/JaKooLit/GTK-themes-icons.git ; then
-    cd GTK-themes-icons
+if git clone --depth 1 https://github.com/qompassai/gtk.git ; then
+    cd gtk
     chmod +x auto-extract.sh
     ./auto-extract.sh
     cd ..

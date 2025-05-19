@@ -3,7 +3,7 @@
 # Copyright (C) 2025 Qompass AI, All rights reserved
 
 {
-  gitUsername = "PhaedrusFlow";
+  gitUsername = "phaedrus";
   gitEmail = "map@qompass.ai";
 
   extraMonitorSettings = "";

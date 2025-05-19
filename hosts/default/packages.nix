@@ -51,7 +51,6 @@
     cava
     cliphist
     loupe
-    gnome-system-monitor
     grim
     gtk-engine-murrine
     hypridle
@@ -81,6 +80,7 @@
     wallust
     wl-clipboard
     wlogout
+    wofi
     xarchiver
     yad
     yt-dlp
@@ -100,6 +100,7 @@
     font-awesome
     terminus_font
     victor-mono
+    nerd-fonts.daddy-time-mono
     (nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
     (nerdfonts.override {fonts = ["FantasqueSansMono"];}) # stable banch
     
@@ -111,10 +112,10 @@
   programs = {
 	  hyprland = {
       enable = true;
-     	  #package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
-		    #portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; #xdph-git
+     	  package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+		    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
      	  
-        portalPackage = pkgs.xdg-desktop-portal-hyprland; # xdph none git
+        portalPackage = pkgs.xdg-desktop-portal-hyprland;
   	  xwayland.enable = true;
     };
 
