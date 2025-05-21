@@ -3,6 +3,8 @@
 <h3> Qompass AI on NixOS </h3>
 
 ![Repository Views](https://komarev.com/ghpvc/?username=qompassai-nix)
+![GitHub all releases](https://img.shields.io/github/downloads/qompassai/nix/total?style=flat-square)
+
 
   <a href="https://nixos.org/"><img src="https://img.shields.io/badge/Nix-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="Nix"></a>
   <br>

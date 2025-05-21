@@ -40,7 +40,7 @@
     xdg-utils
 
     fastfetch
-    (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
+    (mpv.override {scripts = [mpvScripts.mpris];})
     #ranger
       
     # Hyprland Stuff
