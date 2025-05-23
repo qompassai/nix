@@ -1,3 +1,7 @@
+<!-- /qompassai/nix/README.md -->
+<!-- ---------------------------- -->
+<!-- Copyright (C) 2025 Qompass AI, All rights reserved -->
+
 <h2> Quality NixOS </h2>
 
 <h3> Qompass AI on NixOS </h3>
