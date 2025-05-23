@@ -19,6 +19,7 @@ in
         "libvirtd"
         "scanner"
         "lp"
+        "render"
         "video" 
         "input" 
         "audio"
@@ -49,10 +50,8 @@ in
       
       promptInit = ''
         fastfetch -c $HOME/.config/fastfetch/config-compact.jsonc
-
         #pokemon colorscripts like. Make sure to install krabby package
         #krabby random --no-mega --no-gmax --no-regional --no-title -s; 
-
         # Set-up icons for files/directories in terminal using lsd
         alias ls='lsd'
         alias l='ls -l'

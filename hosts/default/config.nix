@@ -16,34 +16,32 @@
     ../../modules/local-hardware-clock.nix
   ];
   boot = {
-    kernelPackages = pkgs.linuxPackages_zen; # zen Kernel
-    #kernelPackages = pkgs.linuxPackages_latest; # Kernel 
+  kernelPackages = pkgs.linuxPackages_zen; # zen Kernel
+  #kernelPackages = pkgs.linuxPackages_latest; # Kernel 
+  kernelParams = [
+  "systemd.mask=systemd-vconsole-setup.service"
+  "systemd.mask=dev-tpmrm0.device"
+  "nowatchdog" 
+  "modprobe.blacklist=sp5100_tco"
+  "modprobe.blacklist=iTCO_wdt"
+  ];
+  kernelModules = [ "v4l2loopback" ];
+  extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
+  initrd = { 
+  availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+  kernelModules = [ ];
+  };
+  kernel.sysctl = {
+  "vm.max_map_count" = 2147483642;
+  };
+  loader = {
+  systemd-boot.enable = true;
+  efi = {
+  canTouchEfiVariables = true;
+  };
+  timeout = 5;
+  };
 
-    kernelParams = [
-      "systemd.mask=systemd-vconsole-setup.service"
-      "systemd.mask=dev-tpmrm0.device" #this is to mask that stupid 1.5 mins systemd bug
-      "nowatchdog" 
-      "modprobe.blacklist=sp5100_tco"
-      "modprobe.blacklist=iTCO_wdt"
- 	  ];
-    kernelModules = [ "v4l2loopback" ];
-      extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
-    initrd = { 
-      availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
-      kernelModules = [ ];
-    };
-    kernel.sysctl = {
-      "vm.max_map_count" = 2147483642;
-    };
-    ## BOOT LOADERS: NOTE USE ONLY 1. either systemd or grub  
-    # Bootloader SystemD
-    loader.systemd-boot.enable = true;
-  
-    loader.efi = {
-	    #efiSysMountPoint = "/efi"; #this is if you have separate /efi partition
-	    canTouchEfiVariables = true;
-  	  };
-    loader.timeout = 5;    
     #loader.grub = {
 	    #enable = true;
 	    #  devices = [ "nodev" ];
@@ -54,49 +52,50 @@
 	    #  configurationName = "${host}";
   	  #	 };
 
-    # Bootloader GRUB theme, configure below
-
-    ## -end of BOOTLOADERS----- ##
     tmp = {
-      useTmpfs = true;
-      tmpfsSize = "30%";
-      };
+    useTmpfs = true;
+    tmpfsSize = "30%";
+    };
     binfmt.registrations.appimage = {
-      wrapInterpreterInShell = false;
-      interpreter = "${pkgs.appimage-run}/bin/appimage-run";
-      recognitionType = "magic";
-      offset = 0;
-      mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
-      magicOrExtension = ''\x7fELF....AI\x02'';
-      };
+    wrapInterpreterInShell = false;
+    interpreter = "${pkgs.appimage-run}/bin/appimage-run";
+    recognitionType = "magic";
+    offset = 0;
+    mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
+    magicOrExtension = ''\x7fELF....AI\x02'';
+    };
     plymouth.enable = true;
-  };
-  # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh! and also, enable it on flake.nix
+    };
+  # GRUB Boot 
   #distro-grub-themes = {
   #  enable = true;
   #  theme = "nixos";
   #};
-  drivers.amdgpu.enable = true;
-  drivers.intel.enable = true;
-  drivers.nvidia.enable = false;
-  drivers.nvidia-prime = {
+  drivers = {
+  amdgpu.enable = true;
+  intel.enable = true;
+  nvidia.enable = false;
+  nvidia-prime = {
     enable = true;
     intelBusID = "";
     nvidiaBusID = "";
   };
+};
+
   vm.guest-services.enable = false;
   local.hardware-clock.enable = false;
 
-  networking.networkmanager.enable = true;
-  networking.hostName = "${host}";
-  networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
+  networking = {
+  networkmanager.enable = true;
+  hostName = "${host}";
+  timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
+  };
   time.timeZone = "America/Los_Angeles";
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
+  LC_ADDRESS = "en_US.UTF-8";
+  LC_IDENTIFICATION = "en_US.UTF-8";
+  LC_MEASUREMENT = "en_US.UTF-8";LC_MONETARY = "en_US.UTF-8";
     LC_NAME = "en_US.UTF-8";
     LC_NUMERIC = "en_US.UTF-8";
     LC_PAPER = "en_US.UTF-8";
@@ -243,44 +242,65 @@
   #  extraBackends = [ pkgs.sane-airscan ];
   #  disabledDefaultBackends = [ "escl" ];
   #};
-  hardware.logitech.wireless.enable = true;
-  hardware.logitech.wireless.enableGraphical = true;
-  hardware.pulseaudio.enable = false; # stable branch
   hardware = {
-  	bluetooth = {
-	    enable = true;
-	    powerOnBoot = true;
-	    settings = {
-		    General = {
-		      Enable = "Source,Sink,Media,Socket";
-		      Experimental = true;
-		    };
+  logitech.wireless.enable = true;
+  logitech.wireless.enableGraphical = true;
+  pulseaudio.enable = false;
+  bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+        Experimental = true;
       };
     };
   };
-  security.rtkit.enable = true;
-  security.polkit.enable = true;
-  security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (
-        subject.isInGroup("users")
-          && (
-            action.id == "org.freedesktop.login1.reboot" ||
-            action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
-            action.id == "org.freedesktop.login1.power-off" ||
-            action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+};
+
+  security = {
+  rtkit.enable = true;
+  polkit = {
+    enable = true;
+    extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if (
+          subject.isInGroup("users")
+            && (
+              action.id == "org.freedesktop.login1.reboot" ||
+              action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+              action.id == "org.freedesktop.login1.power-off" ||
+              action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+            )
           )
-        )
-      {
-        return polkit.Result.YES;
-      }
-    })
-  '';
-  security.pam.services.swaylock = {
+        {
+          return polkit.Result.YES;
+        }
+      })
+    '';
+  };
+  pam.services.swaylock = {
     text = ''
       auth include login
     '';
   };
+};
+
+  programming.dotnet = {
+    enable = true;
+    versions = [ "6.0" "8.0" "9.0" ];
+    withMono = true;
+    withNeovim = true;
+  };
+
+  programming.python = {
+    enable = true;
+    versions = [ "3.11" "3.13" "3.14" "3.14-gilfree" ];
+    withAI = true;
+    withPoetry = true;
+    withNeovim = true;
+  };
+  
 
   nix = {
     settings = {
@@ -322,4 +342,5 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # networking.firewall.enable = false;
   system.stateVersion = "24.11";
+};
 }
