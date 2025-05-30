@@ -1,9 +1,7 @@
 # /qompassai/nix/modules/2/lang.nix
 # --------------------------------------
 # Copyright (C) 2025 Qompass AI, All rights reserved
-
-{ ... }:
-{
+{...}: {
   imports = [
     ./c.nix
     ./cpp.nix
@@ -13,6 +11,7 @@
     ./haskell.nix
     ./js.nix
     ./jula.nix
+    ./lua.nix
     ./markdown.nix
     ./ts.nix
     ./lua.nix

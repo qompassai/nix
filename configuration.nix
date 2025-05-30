@@ -1,32 +1,27 @@
 # ~/.dotfiles/configuration.nix
 # -----------------------------
 # Copyright (C) 2025 Qompass AI, All rights reserved
-
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
+    ./hardware-configuration.nix
+    ./hosts/default/config.nix
+    ./modules/boot/boot.nix
+    ./modules/boot/kernel.nix
+    ./modules/boot/common.nix
+    ./modules/hardware/hardware.nix
+    ./modules/hardware/intel.nix
+    ./modules/hardware/nvidia.nix
+    ./modules/dev/python.nix
+    ./modules/dev/rust.nix
     ./environment.nix
-    ./modules/0/boot.nix
-    ./modules/0/common.nix
-    ./modules/0/hardware.nix
-    ./modules/0/kernel.nix
-    ./modules/1/browser.nix
-    ./modules/1/media.nix
-    ./modules/1/pro.nix
-    ./modules/1/zoom.nix
-    ./modules/2/git.nix
-    ./modules/2/golang.nix
-    ./modules/2/jj.nix
-    ./modules/2/python.nix
-    ./modules/2/rustlang.nix
-    ./modules/2/ziglang.nix
-    ./modules/hyprland-config.nix
   ];
 
   hardware.opengl.enable = true;
-  services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
-
+  services.xserver.videoDrivers = ["nvidia" "modesetting"];
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement = {
@@ -47,5 +42,11 @@
   };
 
   hardware.nvidia-container-toolkit.enable = true;
+  system.boot.enable = true;
+  system.kernel.enable = true;
+  hardware.qompass.enable = true;
+  hardware.intel.enable = true;
+  services.qompass.networking.enable = true;
+  services.qompass.security.enable = true;
+  desktop.fonts.enable = true;
 }
-
