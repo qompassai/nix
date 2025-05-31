@@ -185,10 +185,10 @@ in {
     dnsUpstreams = mkOption {
       type = types.listOf types.str;
       default = [
-        "1.0.0.1@853" # Cloudflare
-        "1.1.1.1@853" # Cloudflare
-        "9.9.9.9@853" # Quad9
-        "149.112.112.112@853" # Quad9 secondary
+        "1.0.0.1@853"
+        "1.1.1.1@853"
+        "9.9.9.9@853"
+        "149.112.112.112@853"
       ];
       description = "DNS over TLS upstream servers";
     };
@@ -203,10 +203,10 @@ in {
       secrets = {
         # Example network-related secrets
         # "wifi/password" = {
-        #   owner = config.users.users.phaedrus.name;
+        #   owner = config.users.users.$USER.name;
         # };
         # "vpn/client-key" = {
-        #   owner = config.users.users.phaedrus.name;
+        #   owner = config.users.users.$USER.name;
         #   mode = "0600";
         # };
       };
@@ -369,7 +369,7 @@ in {
       ];
     users.groups.networkmanager = {};
     environment.sessionVariables = mkIf cfg.enableEncryption {
-      SOPS_AGE_KEY_FILE = "/home/phaedrus/.config/sops/age/keys.txt";
+      SOPS_AGE_KEY_FILE = "/home/$USER/.config/sops/age/keys.txt";
       RAGE_CONFIG_DIR = "$HOME/.config/rage";
       OPENSSL_CONF = "/etc/ssl/openssl.cnf";
     };
