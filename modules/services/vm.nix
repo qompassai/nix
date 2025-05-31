@@ -1,4 +1,4 @@
-# /qompassai/nur-packages/modules/0/vm-guest-services.nix
+# /qompassai/nur-packages/modules/services/vm.nix
 # Qompass AI Nix vm-guest-services module
 # Copyright (C) 2025 Qompass AI, All rights reserved
 # ----------------------------------------------------
