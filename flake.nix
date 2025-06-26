@@ -8,7 +8,6 @@
     flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*";
     nixpkgs.url = "https://flakehub.com/qompassai/NixOS/nixpkgs/*";
   };
-
   outputs = {
     self,
     flake-schemas,
@@ -16,7 +15,6 @@
     ...
   }: let
     supportedSystems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
-
     forEachSupportedSystem = f:
       nixpkgs.lib.genAttrs supportedSystems (
         system:
@@ -56,7 +54,6 @@
         specialArgs = {inherit self nixpkgs;};
       };
     };
-
     devShells = forEachSupportedSystem ({
       pkgs,
       system,
