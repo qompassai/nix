@@ -1,53 +1,46 @@
-# ~/qompassai/nix/hosts/default/users.nix
-# ----------------
+# /qompassai/nix/hosts/x86_64-linux/users.nix
+# Qompass AI NixOS User Config
 # Copyright (C) 2025 Qompass AI, All rights reserved
+####################################################
 { pkgs, username, ... }:
-
-let
-  inherit (import ./variables.nix) gitUsername;
+let inherit (import ./variables.nix) gitUsername;
 in
 {
-  users = { 
+  users = {
     mutableUsers = true;
     users."${username}" = {
       homeMode = "755";
       isNormalUser = true;
       description = "${gitUsername}";
       extraGroups = [
-        "networkmanager"
-        "wheel"
-        "libvirtd"
-        "scanner"
-        "lp"
-        "render"
-        "video" 
-        "input" 
         "audio"
-      ];
+        "input"
+        "networkmanager"
+        "libvirtd"
+        "lp"
+        "scanner"
+        "render"
+        "video"
+        "wheel"
 
-    packages = with pkgs; [
       ];
+      packages = with pkgs; [ ];
     };
-    
     defaultUserShell = pkgs.zsh;
-  }; 
-  
+  };
   environment.shells = with pkgs; [ zsh bashInteractive ];
-  environment.systemPackages = with pkgs; [ lsd fzf ]; 
-    
+  environment.systemPackages = with pkgs; [ lsd fzf ];
   programs = {
-	  zsh = {
-    	enable = true;
-	  	enableCompletion = true;
+    zsh = {
+      enable = true;
+      enableCompletion = true;
       ohMyZsh = {
         enable = true;
-        plugins = ["git"];
-        theme = "agnoster"; 
-      	};
-      
+        plugins = [ "git" ];
+        theme = "agnoster";
+      };
       autosuggestions.enable = true;
       syntaxHighlighting.enable = true;
-      
       promptInit = ''
         fastfetch -c $HOME/.config/fastfetch/config-compact.jsonc
         #pokemon colorscripts like. Make sure to install krabby package
@@ -58,13 +51,12 @@ in
         alias la='ls -a'
         alias lla='ls -la'
         alias lt='ls --tree'
-
         source <(fzf --zsh);
         HISTFILE=~/.zsh_history;
         HISTSIZE=10000;
         SAVEHIST=10000;
         setopt appendhistory;
-        '';
-      };
-   };
+      '';
+    };
+  };
 }

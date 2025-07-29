@@ -1,9 +1,9 @@
 # /qompassai/nix/flake.nix
-# ------------------------------
+# Qompass AI NixOS Flake
 # Copyright (C) 2025 Qompass AI, All rights reserved
+####################################################
 {
   description = "Qompass AI Nix";
-
   inputs = {
     flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*";
     nixpkgs.url = "https://flakehub.com/qompassai/NixOS/nixpkgs/*";
@@ -28,7 +28,6 @@
       languages = import ./modules/dev/lang.nix;
       hyprlandConfig = import ./modules/hyprland-config.nix;
     };
-
     inherit (flake-schemas) schemas;
     nixosConfigurations = {
       primo-x86_64 = nixpkgs.lib.nixosSystem {
@@ -41,7 +40,6 @@
         ];
         specialArgs = {inherit self nixpkgs;};
       };
-
       primo-arm64 = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
         modules = [

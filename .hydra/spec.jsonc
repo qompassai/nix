@@ -1,0 +1,35 @@
+// /qompassai/nix/.hydra/spec.jsonc
+// Qompass AI Nix Hydra Spec
+// Copyright (C) 2025 Qompass AI, All rights reserved
+// ----------------------------------------
+{
+	"enabled": 1,
+	"hidden": false,
+	"description": "Qompass AI rootless Nix jobs",
+	"nixexprinput": "flake",
+	"nixexprpath": "",
+	"flake": true,
+	"checkinterval": 60,
+	"schedulingshares": 100,
+	"enableemail": false,
+	"emailoverride": "",
+	"keepnr": 3,
+	"type": 0,
+	"inputs": {
+		"flake": {
+			"type": "git",
+			"value": "https://github.com/qompassai/nix main",
+			"emailresponsible": false
+		},
+		"nixpkgs": {
+			"type": "git",
+			"value": "https://github.com/NixOS/nixpkgs nixos-25.05",
+			"emailresponsible": false
+		},
+		"pulls": {
+			"type": "githubpulls",
+			"value": "https://github.com/qompassai/nix",
+			"emailresponsible": false
+		}
+	}
+}

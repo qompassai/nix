@@ -2,21 +2,15 @@
 # ---------------------------------------------
 # Copyright (C) 2025 Qompass AI, All rights reserved
 
-{ pkgs, inputs, ...}: let
-
-  python-packages = pkgs.python3.withPackages (
-    ps:
-      with ps; [
-        requests
-        pyquery
-        ]
-    );
-
-  in {
-
+{ pkgs, inputs, ... }:
+let
+  python-packages =
+    pkgs.python3.withPackages (ps: with ps; [ requests pyquery ]);
+in
+{
   nixpkgs.config.allowUnfree = true;
-  
   environment.systemPackages = (with pkgs; [
+    ags
     bc
     baobab
     btrfs-progs
@@ -24,12 +18,13 @@
     curl
     cpufrequtils
     duf
+    fastfetch
     findutils
-    ffmpeg   
+    ffmpeg
     glib
     gsettings-qt
     git
-    killall  
+    killall
     libappindicator
     libnotify
     openssl
@@ -38,14 +33,9 @@
     wget
     xdg-user-dirs
     xdg-utils
-
-    fastfetch
-    (mpv.override {scripts = [mpvScripts.mpris];})
+    (mpv.override { scripts = [ mpvScripts.mpris ]; })
     #ranger
-      
-    # Hyprland Stuff
     #(ags.overrideAttrs (oldAttrs: { inherit (oldAttrs) pname; version = "1.8.2"; }))
-    ags # desktop overview  
     btop
     brightnessctl
     cava
@@ -54,7 +44,7 @@
     grim
     gtk-engine-murrine
     hypridle
-    imagemagick 
+    imagemagick
     inxi
     jq
     kitty
@@ -62,7 +52,7 @@
     networkmanagerapplet
     nwg-displays
     nwg-look
-    nvtopPackages.full	 
+    nvtopPackages.full
     pamixer
     pavucontrol
     playerctl
@@ -84,14 +74,9 @@
     xarchiver
     yad
     yt-dlp
-
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
-  ]) ++ [
-	  python-packages
-  ];
-
-  # FONTS
+  ]) ++ [ python-packages ];
   fonts.packages = with pkgs; [
     noto-fonts
     fira-code
@@ -101,52 +86,44 @@
     terminus_font
     victor-mono
     nerd-fonts.daddy-time-mono
-    (nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
-    (nerdfonts.override {fonts = ["FantasqueSansMono"];}) # stable banch
-    
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; }) # stable banch
+    (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; }) # stable banch
     #nerd-fonts.jetbrains-mono # unstable 
     #nerd-fonts.fira-code # unstable
     #nerd-fonts.fantasque-sans-mono #unstable
- 	];
-  
+  ];
   programs = {
-	  hyprland = {
+    hyprland = {
       enable = true;
-     	  package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-		    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-     	  
-        portalPackage = pkgs.xdg-desktop-portal-hyprland;
-  	  xwayland.enable = true;
+      package =
+        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      portalPackage =
+        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      # portalPackage = pkgs.xdg-desktop-portal-hyprland;
+      xwayland.enable = true;
     };
-
-	
-	  waybar.enable = true;
-	  hyprlock.enable = true;
-	  firefox.enable = true;
-	  git.enable = true;
+    waybar.enable = true;
+    hyprlock.enable = true;
+    firefox.enable = true;
+    git.enable = true;
     nm-applet.indicator = true;
     neovim.enable = true;
-
-	  thunar.enable = true;
-	  thunar.plugins = with pkgs.xfce; [
-		  exo
-		  mousepad
-		  thunar-archive-plugin
-		  thunar-volman
-		  tumbler
-  	  ];
-	
+    thunar.enable = true;
+    thunar.plugins = with pkgs.xfce; [
+      exo
+      mousepad
+      thunar-archive-plugin
+      thunar-volman
+      tumbler
+    ];
     virt-manager.enable = false;
-    
     steam = {
       enable = true;
       gamescopeSession.enable = true;
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
     };
-    
     xwayland.enable = true;
-
     dconf.enable = true;
     seahorse.enable = true;
     fuse.userAllowOther = true;
@@ -155,19 +132,11 @@
       enable = true;
       enableSSHSupport = true;
     };
-	
   };
-
   xdg.portal = {
     enable = true;
     wlr.enable = false;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-    ];
-    configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal
-    ];
-    };
-
-  }
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    configPackages = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal ];
+  };
+}
