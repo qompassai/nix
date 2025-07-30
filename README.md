@@ -1,6 +1,7 @@
-<!-- /qompassai/nix/README.md -->
-<!-- ---------------------------- -->
+<!----------/qompassai/nix/README.md --------------------->
+<!-- ----------Qompass AI Nix ---------------------------->
 <!-- Copyright (C) 2025 Qompass AI, All rights reserved -->
+<!-------------------------------------------------------->
 
 <h2> Quality NixOS </h2>
 
@@ -9,7 +10,7 @@
 ![Repository Views](https://komarev.com/ghpvc/?username=qompassai-nix)
 ![GitHub all releases](https://img.shields.io/github/downloads/qompassai/nix/total?style=flat-square)
 
-
+<p align="center">
   <a href="https://nixos.org/"><img src="https://img.shields.io/badge/Nix-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="Nix"></a>
   <br>
   <a href="https://nix.dev/manual/nix/2.25/language/"><img src="https://img.shields.io/badge/Nix-Documentation-blue?style=flat-square" alt="Nix Documentation"></a>
@@ -19,10 +20,213 @@
   <a href="./LICENSE-QCDA"><img src="https://img.shields.io/badge/license-Q--CDA-lightgrey.svg" alt="License: Q-CDA"></a>
 </p>
 
-
 <details>
-<summary style="font-size: 1.4em; font-weight: bold; padding: 15px; background: #667eea; color: white; border-radius: 10px; cursor: pointer; margin: 10px 0;"><strong>❄️ Qompass AI Quickstart</strong></summary>
-<blockquote style="font-size: 1.2em; line-height: 1.8; padding: 25px; background: #f8f9fa; border-left: 6px solid #667eea; border-radius: 8px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+  <summary style="font-size: 1.4em; font-weight: bold; padding: 15px; background: #667eea; color: white; border-radius: 10px; cursor: pointer; margin: 10px 0;">
+    <strong>▶️ Qompass AI Quick Start</strong>
+  </summary>
+  <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 10px; font-family: monospace;">
+
+```sh
+curl -fSsL https://raw.githubusercontent.com/qompassai/nix/main/scripts/quickstart.sh | sh
+```
+  </div>
+  <blockquote style="font-size: 1.2em; line-height: 1.8; padding: 25px; background: #f8f9fa; border-left: 6px solid #667eea; border-radius: 8px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <details>
+      <summary style="font-size: 1em; font-weight: bold; padding: 10px; background: #e9ecef; color: #333; border-radius: 5px; cursor: pointer; margin: 10px 0;">
+        <strong>📄 We STRONGLY advise you read the script BEFORE running it 😉</strong>
+      </summary>
+      <pre style="background: #fff; padding: 15px; border-radius: 5px; border: 1px solid #ddd; overflow-x: auto;">
+#!/bin/sh
+# /qompassai/nix/scripts/quickstart.sh
+# Qompass AI Nix Quickstart
+# Copyright (C) 2025 Qompass AI, All rights reserved
+####################################################
+set -eu
+IFS='
+'
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+: "${XDG_DATA_HOME:=$HOME/.local/share}"
+: "${XDG_BIN_HOME:=$HOME/.local/bin}"
+NIX_CONFIG_DIR="$XDG_CONFIG_HOME/nix"
+NIX_DATA_DIR="$XDG_DATA_HOME/nix"
+NIX_BIN_DIR="$XDG_BIN_HOME"
+NIXCONF="$NIX_CONFIG_DIR/nix.conf"
+FLAKEFILE="$NIX_CONFIG_DIR/flake.nix"
+mkdir -p "$NIX_CONFIG_DIR" "$NIX_DATA_DIR" "$NIX_BIN_DIR"
+choose_menu() {
+        title="$1"
+        prompt="$2"
+        opts="$3"
+        default="$4"
+        printf '╭────────────────────────────────────────────╮\n'
+        printf '│    Qompass AI · Nix Quick‑Start            │\n'
+        printf '╰────────────────────────────────────────────╯\n'
+        printf '    © 2025 Qompass AI. All rights reserved   \n\n'
+        printf ">> %s\n" "$title"
+        n=1
+        for opt in $opts; do
+                printf "  %2d) %s\n" "$n" "$opt"
+                n=$((n + 1))
+        done
+        printf '  a) all (recommended)\n'
+        printf '  n) none\n'
+        printf '  q) quit\n\n'
+        printf "$prompt [$default]: "
+        read -r ans
+        [ -z "$ans" ] && ans="$default"
+        [ "$ans" = "q" ] && {
+                echo "Aborted."
+                exit 0
+        }
+        final=""
+        if [ "$ans" = "a" ]; then
+                for o in $opts; do final="$final$o "; done
+        elif [ "$ans" = "n" ]; then
+                final=""
+        else
+                IFS=", "
+                set -- "$ans"
+                for sel; do
+                        case $sel in
+                        '' | *[!0-9]*) continue ;;
+                        esac
+                        idx=1
+                        for o in $opts; do
+                                [ "$sel" -eq "$idx" ] && final="$final$o "
+                                idx=$((idx + 1))
+                        done
+                done
+                unset IFS
+        fi
+        echo "$final" | sed 's/ *$//'
+}
+subs="https://cache.nixos.org https://cache.flakehub.com/ https://cuda-maintainers.cachix.org https://cache.iog.io https://cache.garnix.io"
+trusted_subs="https://cache.nixos.org https://nix-community.cachix.org https://bunker.cachix.org https://cache.garnix.io"
+sys_feat="ca-derivations nixos-test benchmark big-parallel kvm uid-range"
+trusted_users="root @wheel $USER"
+allowed_users="@nixbld $USER @wheel *"
+printf "Enter your GitHub Personal Access Token (for flakes, optional): "
+read -r GH_API_TOKEN
+echo "# Qompass AI Nix XDG Config" >"$NIXCONF"
+echo "# Auto-generated by quickstart.sh" >"$NIXCONF"
+echo "####################################################" >"$NIXCONF"
+echo "" >>"$NIXCONF"
+cat <<EOF >>"$NIXCONF"
+abort-on-warn = true
+accept-flake-config = true
+access-tokens = "$GH_API_TOKEN"
+allow-dirty = true
+allow-dirty-locks = false
+allow-import-from-derivation = true
+allow-new-privileges = true
+allow-unsafe-native-code-during-evaluation = false
+allowed-impure-host-deps =
+allowed-uris = https://github.com/NixOS
+allow-symlinked-store = true
+always-allow-substitutes = false
+auto-allocate-uids = true
+auto-optimise-store = true
+build-hook = nix __build-remote
+build-users-group = nixbld
+builders-use-substitutes = true
+commit-lock-file-summary = true
+compress-build-log = true
+cores = 0
+connect-timeout = 5
+debugger-on-warn = true
+debugger-on-trace = true
+download-attempts = 5
+download-buffer-size = 67108864
+download-speed = 0
+eval-cache = true
+eval-profile-file = nix.profile
+eval-profiler = disabled
+eval-profiler-frequency = 99
+experimental-features = auto-allocate-uids ca-derivations cgroups configurable-impure-env dynamic-derivations fetch-closure fetch-tree flakes git-hashing impure-derivations local-overlay-store mounted-ssh-store nix-command no-url-literals parse-toml-timestamps pipe-operators recursive-nix verified-fetches
+fallback = true
+filter-syscalls = true
+flake-registry = https://github.com/NixOS/flake-registry/raw/master/flake-registry.json
+fsync-metadata = true
+fsync-store-paths = false
+gc-keep-derivations = false
+gc-reserved-space = 4294967296
+http-connections = 25
+http2 = true
+id-count = 8388608
+ignore-try = true
+ignored-acls = security.csm security.selinux system.nfs4_acl
+impersonate-linux-26 = false
+json-log-path =
+keep-build-log = true
+keep-derivations = true
+keep-env-derivations = true
+keep-failed = false
+keep-going = false
+keep-outputs = false
+log-lines = 50
+max-build-log-size = 0
+max-free = 9223372036854775807
+max-jobs = auto
+max-substitution-jobs = 16
+min-free = 4294967296
+max-free = 10737418240
+nar-buffer-size = 33554432
+narinfo-cache-negative-ttl = 3600
+narinfo-cache-positive-ttl = 3600
+netrc-file = \$HOME/.config/nix/netrc
+nix-shell-always-looks-for-shell-nix = true
+print-missing = true
+pure-eval = true
+require-sigs = true
+sandbox = true
+secret-key-files =
+ssl-cert-file =
+store = \$HOME/.nix/store
+substitute = true
+show-trace = true
+stalled-download-timeout = 300
+sync-before-registering = true
+tarball-ttl = 3600
+trust-tarballs-from-git-forges = true
+upgrade-nix-store-path-url = https://github.com/NixOS/nixpkgs/raw/master/nixos/modules/installer/tools/nix-fallback-paths.nix
+use-registries = true
+use-sqlite-wal = true
+use-xdg-base-directories = true
+warn-dirty = false
+warn-large-path-threshold = 0
+EOF
+picked=$(choose_menu "Select Nix Substituters" "Pick one or more" "$subs" "a")
+echo "substituters = $picked" >>"$NIXCONF"
+picked=$(choose_menu "Select extra-substituters" "Pick one or more" "$subs" "a")
+echo "extra-substituters = $picked" >>"$NIXCONF"
+picked=$(choose_menu "Select trusted-substituters" "Pick one or more" "$trusted_subs" "a")
+echo "trusted-substituters = $picked" >>"$NIXCONF"
+picked=$(choose_menu "Select system-features" "Pick one or more" "$sys_feat" "a")
+echo "system-features = $picked" >>"$NIXCONF"
+picked=$(choose_menu "Select trusted-users" "Pick one or more" "$trusted_users" "a")
+echo "trusted-users = $picked" >>"$NIXCONF"
+picked=$(choose_menu "Select allowed-users" "Pick one or more" "$allowed_users" "a")
+echo "allowed-users = $picked" >>"$NIXCONF"
+echo ""
+echo "Your Nix config is written to: $NIXCONF"
+echo "Restart nix-daemon or open a new shell for changes to take effect."
+cat <<EOQ >"$FLAKEFILE"
+{
+  description = "Qompass AI Nix Quickstart flake";
+  outputs = { self, nixpkgs }:
+    let
+      system = "x86_64-linux";
+    in {
+    defaultPackage.\${system} = nixpkgs.legacyPackages.\${system}.hello;
+  };
+}
+EOQ
+echo "A minimal flake.nix example has also been written to: $FLAKEFILE"
+exit 0
+</pre> </details> <p>Or, <a href="https://github.com/qompassai/nix/blob/main/scripts/quickstart.sh" target="_blank">View the quickstart script</a>.</p>
+
+  </blockquote>
+</details>
 
 </blockquote>
 </details>
@@ -118,14 +322,13 @@
 [![Liberapay](https://img.shields.io/badge/Liberapay-Donate-F6C915?style=for-the-badge\&logo=liberapay\&logoColor=black)](https://liberapay.com/qompassai)
 [![Open Collective](https://img.shields.io/badge/Open%20Collective-Support-7FADF2?style=for-the-badge\&logo=opencollective\&logoColor=white)](https://opencollective.com/qompassai)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFDD00?style=for-the-badge\&logo=buy-me-a-coffee\&logoColor=black)](https://www.buymeacoffee.com/phaedrusflow)
-
 <details markdown="1">
 <summary><strong>🔐 Cryptocurrency Donations</strong></summary>
 
 **Monero (XMR):**
 
 <div align="center">
-  <img src="./assets/monero-qr.png" alt="Monero QR Code" width="180">
+  <img src="https://www.github.com/qompassai/svg/assets/monero-qr.svg" alt="Monero QR Code" width="180">
 </div>
 
 <div style="margin: 10px 0;">
@@ -162,61 +365,61 @@ $$
 
 Where:
 
-- $y$ represents the model output
-- $(x_1, x_2, ..., x_n)$ are input features
-- $(w_1, w_2, ..., w_n)$ are feature weights
-- $b$ is the bias term
+* $y$ represents the model output
+* $(x\_1, x\_2, ..., x\_n)$ are input features
+* $(w\_1, w\_2, ..., w\_n)$ are feature weights
+* $b$ is the bias term
 
 ### Neural Network Activation
 
 For neural networks, the bias term is incorporated before activation:
 
 $$
-z = \\sum\_{i=1}^{n} w_ix_i + b
+z = \sum_{i=1}^{n} w_ix_i + b
 $$
 $$
-a = \\sigma(z)
+a = \sigma(z)
 $$
 
 Where:
 
-- $z$ is the weighted sum plus bias
-- $a$ is the activation output
-- $\\sigma$ is the activation function
+* $z$ is the weighted sum plus bias
+* $a$ is the activation output
+* $\sigma$ is the activation function
 
 ### Attention Mechanism- aka what makes the Transformer (The "T" in ChatGPT) powerful
 
-- [Attention High level overview video](https://www.youtube.com/watch?v=fjJOgb-E41w)
+* [Attention High level overview video](https://www.youtube.com/watch?v=fjJOgb-E41w)
 
-- [Attention Is All You Need Arxiv Paper](https://arxiv.org/abs/1706.03762)
+* [Attention Is All You Need Arxiv Paper](https://arxiv.org/abs/1706.03762)
 
 The Attention mechanism equation is:
 
 $$
-\\text{Attention}(Q, K, V) = \\text{softmax}\\left( \\frac{QK^T}{\\sqrt{d_k}} \\right) V
+\text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right) V
 $$
 
 Where:
 
-- $Q$ represents the Query matrix
-- $K$ represents the Key matrix
-- $V$ represents the Value matrix
-- $d_k$ is the dimension of the key vectors
-- $\\text{softmax}(\\cdot)$ normalizes scores to sum to 1
+* $Q$ represents the Query matrix
+* $K$ represents the Key matrix
+* $V$ represents the Value matrix
+* $d_k$ is the dimension of the key vectors
+* $\text{softmax}(\cdot)$ normalizes scores to sum to 1
 
 ### Q: Do I have to buy a Linux computer to use this? I don't have time for that!
 
 ### A: No. You can run Linux and/or the tools we share alongside your existing operating system:
 
-- Windows users can use Windows Subsystem for Linux [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
-- Mac users can use [Homebrew](https://brew.sh/)
-- The code-base instructions were developed with both beginners and advanced users in mind.
+* Windows users can use Windows Subsystem for Linux [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+* Mac users can use [Homebrew](https://brew.sh/)
+* The code-base instructions were developed with both beginners and advanced users in mind.
 
 ### Q: Do you have to get a masters in AI?
 
 ### A: Not if you don't want to. To get competent enough to get past ChatGPT dependence at least, you just need a computer and a beginning's mindset. Huggingface is a good place to start.
 
-- [Huggingface](https://docs.google.com/presentation/d/1IkzESdOwdmwvPxIELYJi8--K3EZ98_cL6c5ZcLKSyVg/edit#slide=id.p)
+* [Huggingface](https://docs.google.com/presentation/d/1IkzESdOwdmwvPxIELYJi8--K3EZ98_cL6c5ZcLKSyVg/edit#slide=id.p)
 
 ### Q: What makes a "small" AI model?
 
@@ -229,30 +432,30 @@ Where:
 
 ### Protection for Vulnerable Populations
 
-The dual licensing aims to address the cybersecurity gap that disproportionately affects underserved populations. As highlighted by recent attacks<sup><a href="#ref1">[1]</a></sup>, low-income residents, seniors, and foreign language speakers face higher-than-average risks of being victims of cyberattacks. By offering both open-source and commercial licensing options, we encourage the development of cybersecurity solutions that can reach these vulnerable groups while also enabling sustainable development and support.
+The dual licensing aims to address the cybersecurity gap that disproportionately affects underserved populations. As highlighted by recent attacks<sup><a href="#ref1">\[1]</a></sup>, low-income residents, seniors, and foreign language speakers face higher-than-average risks of being victims of cyberattacks. By offering both open-source and commercial licensing options, we encourage the development of cybersecurity solutions that can reach these vulnerable groups while also enabling sustainable development and support.
 
 ### Preventing Malicious Use
 
-The AGPL-3.0 license ensures that any modifications to the software remain open source, preventing bad actors from creating closed-source variants that could be used for exploitation. This is especially crucial given the rising threats to vulnerable communities, including children in educational settings. The attack on Minneapolis Public Schools, which resulted in the leak of 300,000 files and a $1 million ransom demand, highlights the importance of transparency and security<sup><a href="#ref8">[8]</a></sup>.
+The AGPL-3.0 license ensures that any modifications to the software remain open source, preventing bad actors from creating closed-source variants that could be used for exploitation. This is especially crucial given the rising threats to vulnerable communities, including children in educational settings. The attack on Minneapolis Public Schools, which resulted in the leak of 300,000 files and a $1 million ransom demand, highlights the importance of transparency and security<sup><a href="#ref8">\[8]</a></sup>.
 
 ### Addressing Cybersecurity in Critical Sectors
 
-The commercial license option allows for tailored solutions in critical sectors such as healthcare, which has seen significant impacts from cyberattacks. For example, the recent Change Healthcare attack<sup><a href="#ref4">[4]</a></sup> affected millions of Americans and caused widespread disruption for hospitals and other providers. In January 2025, CISA<sup><a href="#ref2">[2]</a></sup> and FDA<sup><a href="#ref3">[3]</a></sup> jointly warned of critical backdoor vulnerabilities in Contec CMS8000 patient monitors, revealing how medical devices could be compromised for unauthorized remote access and patient data manipulation.
+The commercial license option allows for tailored solutions in critical sectors such as healthcare, which has seen significant impacts from cyberattacks. For example, the recent Change Healthcare attack<sup><a href="#ref4">\[4]</a></sup> affected millions of Americans and caused widespread disruption for hospitals and other providers. In January 2025, CISA<sup><a href="#ref2">\[2]</a></sup> and FDA<sup><a href="#ref3">\[3]</a></sup> jointly warned of critical backdoor vulnerabilities in Contec CMS8000 patient monitors, revealing how medical devices could be compromised for unauthorized remote access and patient data manipulation.
 
 ### Supporting Cybersecurity Awareness
 
-The dual licensing model supports initiatives like the Cybersecurity and Infrastructure Security Agency (CISA) efforts to improve cybersecurity awareness<sup><a href="#ref7">[7]</a></sup> in "target rich" sectors, including K-12 education<sup><a href="#ref5">[5]</a></sup>. By allowing both open-source and commercial use, we aim to facilitate the development of tools that support these critical awareness and protection efforts.
+The dual licensing model supports initiatives like the Cybersecurity and Infrastructure Security Agency (CISA) efforts to improve cybersecurity awareness<sup><a href="#ref7">\[7]</a></sup> in "target rich" sectors, including K-12 education<sup><a href="#ref5">\[5]</a></sup>. By allowing both open-source and commercial use, we aim to facilitate the development of tools that support these critical awareness and protection efforts.
 
 ### Bridging the Digital Divide
 
-The unfortunate reality is that too many individuals and organizations have gone into a frenzy in every facet of our daily lives<sup><a href="#ref6">[6]</a></sup>. These unfortunate folks identify themselves with their talk of "10X" returns and building towards Artificial General Intelligence aka "AGI" while offering GPT wrappers. Our dual licensing approach aims to acknowledge this deeply concerning predatory paradigm with clear eyes while still operating to bring the best parts of the open-source community with our services and solutions.
+The unfortunate reality is that too many individuals and organizations have gone into a frenzy in every facet of our daily lives<sup><a href="#ref6">\[6]</a></sup>. These unfortunate folks identify themselves with their talk of "10X" returns and building towards Artificial General Intelligence aka "AGI" while offering GPT wrappers. Our dual licensing approach aims to acknowledge this deeply concerning predatory paradigm with clear eyes while still operating to bring the best parts of the open-source community with our services and solutions.
 
 ### Recent Cybersecurity Attacks
 
 Recent attacks underscore the importance of robust cybersecurity measures:
 
-- The Change Healthcare cyberattack in February 2024 affected millions of Americans and caused significant disruption to healthcare providers.
-- The White House and Congress jointly designated October 2024 as Cybersecurity Awareness Month. This designation comes with over 100 actions that align the Federal government and public/private sector partners are taking to help every man, woman, and child to safely navigate the age of AI.
+* The Change Healthcare cyberattack in February 2024 affected millions of Americans and caused significant disruption to healthcare providers.
+* The White House and Congress jointly designated October 2024 as Cybersecurity Awareness Month. This designation comes with over 100 actions that align the Federal government and public/private sector partners are taking to help every man, woman, and child to safely navigate the age of AI.
 
 By offering both open source and commercial licensing options, we strive to create a balance that promotes innovation and accessibility. We address the complex cybersecurity challenges faced by vulnerable populations and critical infrastructure sectors as the foundation of our solutions, not an afterthought.
 
