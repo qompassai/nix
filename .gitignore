@@ -4,6 +4,7 @@
 ################################################### 
 .pre-commit-config.yaml
 .direnv
+.forge
 tmp
 result
 latest.iso
