@@ -19,13 +19,11 @@ in {
       default = false;
       description = "Enable DroidCam v4l2loopback configuration";
     };
-
     enableFirewalld = mkOption {
       type = types.bool;
       default = true;
       description = "Enable firewalld netfilter optimizations";
     };
-
     enableMediaDevices = mkOption {
       type = types.bool;
       default = true;
@@ -46,7 +44,6 @@ in {
       default = true;
       description = "Enable ZRAM compression";
     };
-
     zramDevices = mkOption {
       type = types.int;
       default = 3;
@@ -78,15 +75,12 @@ in {
           alias char-major-10-229 fuse
         ''
         + optionalString cfg.enableDroidCam ''
-          # DroidCam Configuration
           options v4l2loopback_dc width=640 height=480
         ''
         + optionalString cfg.enableFirewalld ''
-          # Firewalld Netfilter Configuration
           install nf_conntrack /usr/bin/modprobe --ignore-install nf_conntrack $CMDLINE_OPTS && /sbin/sysctl --quiet --pattern 'net[.]netfilter[.]nf_conntrack.*' --system
         ''
         + optionalString cfg.enableMediaDevices ''
-          # Media Device Configuration
           options blackmagic blackmagic_flags=4
           options cec debug_phys_addr=1
           options cec debug=2
@@ -105,7 +99,6 @@ in {
           options video report_key_events=3
         ''
         + optionalString cfg.enableNetworking ''
-          # Realtek R8125 Network Configuration
           options r8125 aspm=0
           options r8125 debug=0
           options r8125 disable_wol_support=1
@@ -138,9 +131,7 @@ in {
           install ib_qib modprobe -i ib_qib $CMDLINE_OPTS && /usr/lib/rdma/truescale-serdes.cmds start
         ''
         + optionalString cfg.enableZram ''
-          # ZRAM Configuration
           options zram num_devices=${toString cfg.zramDevices}
-
         '';
     };
   };

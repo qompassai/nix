@@ -1,6 +1,7 @@
-# ~/qompassai/dotfiles/modules/hyprland-config.nix
-# ---------------------------------------
+# /qompassai/dotfiles/modules/hyprland-config.nix
+# Qompass AI Hyprland Nix Module
 # Copyright (C) 2025 Qompass AI, All rights reserved
+####################################################
 {
   config,
   pkgs,
@@ -11,14 +12,12 @@
     enable = true;
     systemd.enable = true;
   };
-
   xdg.configFile = {
     "hypr" = {
       source = ./hypr;
       recursive = true;
     };
   };
-
   home.packages = with pkgs; [
     hyprpaper
     hyprpicker

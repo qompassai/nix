@@ -1,7 +1,7 @@
-# justfile
-# Qompass AI - [Add description here]
+# /qompassai/nix/justfile
+# Qompass AI Nix Justfile
 # Copyright (C) 2025 Qompass AI, All rights reserved
-# ----------------------------------------
+####################################################
 SOPS_FILE := "../nix-secrets/.sops.yaml"
 export HELPERS_PATH := justfile_directory() + "/scripts/helpers.sh"
 default:

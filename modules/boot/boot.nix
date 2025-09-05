@@ -1,5 +1,5 @@
 # /qompassai/NixOS/modules/0/boot.nix
-# Qompass AI Nix boot configuration module
+# Qompass AI Nix Boot configuration module
 # Copyright (C) 2025 Qompass AI, All rights reserved
 # ----------------------------------------------------
 {
@@ -35,7 +35,6 @@ in {
           };
           efi.canTouchEfiVariables = true;
         })
-
         (mkIf (!cfg.enableSystemdBoot) {
           grub = {
             enable = true;
@@ -59,7 +58,6 @@ in {
           "usb_storage"
           "sd_mod"
           "rtsx_pci_sdmmc"
-          "r8169"
           "r8125"
         ];
         kernelModules = [
@@ -68,7 +66,6 @@ in {
           "nvidia_uvm"
           "nvidia_drm"
         ];
-        kernelModules = ["nvidia_drm"];
         compressor = "zstd";
         compressorArgs = ["-19" "-T0"];
       };
@@ -94,7 +91,7 @@ in {
     };
     systemd = {
       services = {
-        "getty@tty1".enable = false;
+        "getty@tty1".enable = true;
         "autovt@tty1".enable = false;
       };
       defaultUnit = "graphical.target";

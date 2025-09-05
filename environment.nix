@@ -1,7 +1,6 @@
-# ~/.dotfiles/environment.nix
-# ---------------------------
+# Qompsass AI Nix Environment
 # Copyright (C) 2025 Qompass AI, All rights reserved
-
+####################################################
 { config, variables, ... }:
 let 
   homeDir = config.users.users.user.home;
@@ -26,7 +25,6 @@ in {
     MESA_SHADER_CACHE_DIR = "${XDG_CACHE_HOME}/mesa_shader_cache_db";
     OCL_ICD_VENDORS = "${XDG_CONFIG_HOME}/OpenCL/vendors";
     SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/ssh-agent.socket";
-
     inherit (variables) EDITOR VISUAL BEMENU_BACKEND GTK_USE_PORTAL;
     inherit (variables.wm) XDG_CURRENT_DESKTOP XDG_SESSION_TYPE;
   };

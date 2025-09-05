@@ -1,6 +1,5 @@
 {
   description = "Qompass AI Nix Flake";
-
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-utils.url = "github:numtide/flake-utils";
@@ -14,7 +13,6 @@
     flake-schemas.url = "github:DeterminateSystems/flake-schemas?ref=main";
     nix-on-droid.url = "github:nix-community/nix-on-droid";
   };
-
   outputs =
     inputs@{ self
     , flake-parts
