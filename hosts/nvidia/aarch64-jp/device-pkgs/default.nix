@@ -46,7 +46,6 @@ let
             bash ./l4t_uefi_sign_image.sh --image ./kernel/Image --cert ${cfg.firmware.uefi.secureBoot.signer.cert} --key ${cfg.firmware.uefi.secureBoot.signer.key} --mode nosplit
           )
         '';
-
         flashArgs = [
           "--rcm-boot"
         ]
