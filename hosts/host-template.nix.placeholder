@@ -1,0 +1,49 @@
+# host-template.nix.placeholder
+# Qompass AI - [Add description here]
+# Copyright (C) 2025 Qompass AI, All rights reserved
+####################################################
+{
+  inputs,
+  lib,
+  ...
+}:
+let
+in
+{
+  imports = [
+    #
+    # ========== Hardware ==========
+    #
+    ./hardware-configuration.nix
+    #inputs.hardware.nixosModules.common-cpu-amd
+    #inputs.hardware.nixosModules.common-cpu-intel
+    #inputs.hardware.nixosModules.common-gpu-nvidia
+    #inputs.hardware.nixosModules.common-gpu-intel
+    #inputs.hardware.nixosModules.common-pc-ssd
+    #inputs.disko.nixosModules.disko
+    (map lib.custom.relativeToRoot [
+      "hosts/common/core"
+    ])
+  ];
+  hostSpec = {
+    hostName = "foo";
+    useYubikey = lib.mkForce true;
+    scaling = lib.mkForce "1";
+  };
+  networking = {
+    networkmanager.enable = true;
+    enableIPv6 = true;
+  };
+  boot.loader = {
+    systemd-boot = {
+      enable = true;
+    };
+    efi.canTouchEfiVariables = true;
+    timeout = 3;
+  };
+  boot.initrd = {
+    systemd.enable = true;
+  };
+  # https://wiki.nixos.org/wiki/FAQ/When_do_I_update_stateVersion
+  system.stateVersion = "24.11";
+}
