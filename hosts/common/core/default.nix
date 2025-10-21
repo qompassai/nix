@@ -9,16 +9,15 @@ let
 in
 {
   imports = lib.flatten [
-    inputs.home-manager.${platformModules}.home-manager
     inputs.sops-nix.${platformModules}.sops
     (map lib.custom.relativeToRoot [
       "modules/common"
       "modules/hosts/common"
       "modules/hosts/${platform}"
       "hosts/common/core/${platform}.nix"
-      "hosts/common/core/sops.nix" # Core because it's used for backups, mail
+      "hosts/common/core/sops.nix"
       "hosts/common/core/ssh.nix"
-      #"hosts/common/core/services" #not used yet
+      #"hosts/common/core/services"
       "hosts/common/users/primary"
       "hosts/common/users/primary/${platform}.nix"
     ])
@@ -30,8 +29,6 @@ in
   };
   networking.hostName = config.hostSpec.hostName;
   environment.systemPackages = [ pkgs.openssh ];
-  home-manager.useGlobalPkgs = true;
-  home-manager.backupFileExtension = "bk";
   nixpkgs = {
     overlays = [ outputs.overlays.default ];
     config = { allowUnfree = true; };
@@ -45,6 +42,7 @@ in
       accept-flake-config = true;
       auto-optimise-store = true;
       connect-timeout = 5;
+      build-cores = 0;
       cores = 0;
       log-lines = 25;
       max-build-log-size = 0;
@@ -70,12 +68,10 @@ in
         "local-overlay-store"
         "mounted-ssh-store"
         "nix-command"
-        "no-url-literals"
         "parse-toml-timestamps"
         "pipe-operators"
         "recursive-nix"
         "verified-fetches"
-        "flakes"
       ];
       substitute = true;
       substituters = "https://cache.nixos.org";
@@ -83,11 +79,11 @@ in
       stalled-download-timeout = 300;
       sync-before-registering = true;
       system-features = [
-        "ca-derivations"
-        "nixos-test"
         "benchmark"
         "big-parallel"
+        "ca-derivations"
         "kvm"
+        "nixos-test"
         "uid-range"
       ];
       trusted-public-keys = [
@@ -95,10 +91,10 @@ in
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
       trusted-substituters = [
-        "https://cache.nixos.org"
-        "https://nix-community.cachix.org"
         "https://bunker.cachix.org"
         "https://cache.garnix.io"
+        "https://cache.nixos.org"
+        "https://nix-community.cachix.org"
       ];
       upgrade-nix-store-path-url =
         "https://github.com/NixOS/nixpkgs/raw/master/nixos/modules/installer/tools/nix-fallback-paths.nix";
