@@ -78,6 +78,9 @@
         (final: prev: {
           hypr-unstable = inputs.hyprland.packages.${prev.stdenv.hostPlatform.system}.hyprland;
         })
+         (final: prev: {
+          bison = prev.bison.overrideAttrs (old: { doCheck = false; });
+        })
       ];
       strictDepsByDefault = true;
       structuredAttrsByDefault = false;

@@ -14,10 +14,6 @@
     #  speedFactor = 2;
     #  systems = [ "x86_64-linux" "aarch64-linux" ];
     #};
-    optimise = {
-      automatic = true;
-      persistent = true;
-    };
     channel.enable = true;
     checkAllErrors = false;
     checkConfig = true;
@@ -35,7 +31,10 @@
       persistent = false;
       options = "--delete-older-than 10d";
     };
-    nrBuildUsers = 64;
+    optimise = {
+      automatic = true;
+      persistent = true;
+    };
     package = pkgs.nixVersions.latest;
     #registry = {
     #  lix.flake = inputs.lix;
@@ -72,12 +71,13 @@
       auto-allocate-uids = true;
       auto-optimise-store = true;
       build-dir = "/var/tmp/nix-build";
+      build-prefer-local = true;
       build-use-sandbox = true;
       builders-use-substitutes = true;
       build-users-group = "nixbld";
       compress-build-log = true;
       cores = 0;
-      connect-timeout = 5;
+      connect-timeout = 30;
       debugger-on-trace = false;
       download-attempts = 5;
       download-speed = 0;
@@ -152,7 +152,7 @@
       max-free = 9223372036854775807;
       max-jobs = "auto";
       max-silent-time = 900;
-      max-substitution-jobs = 16;
+      max-substitution-jobs = 8;
       min-free = 4294967296;
       nar-buffer-size = 33554432;
       narinfo-cache-negative-ttl = 3600;
@@ -215,19 +215,21 @@
         "cache.iog.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "ghostty.cachix.org-1:WTrThZtR2ZuQirrZvrmRQKHehTOnBg9xZMQ6VIHdUso="
+        "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "kernel-overlay.cachix.org-1:rUvSa2sHn0a7RmwJDqZvijlzZHKeGvmTQfOUr2kaxr4="
         "lix.systems:1cjqjprsDP3zzjn7mzdJM1a3RmwSLQZWMWePVETGuEk="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+        "qnix:d/dwC2PX1o/KXVnuRbcMbNkTatKF59gZ6z4lWQtaonI="
       ];
       trusted-substituters = [
         "https://bunker.cachix.org"
         "https://cache.nixos.org"
         "https://cache.garnix.io"
+        "https://hydra.nixos.org"
         "https://hyprland.cachix.org"
         "https://nix-community.cachix.org"
-
       ];
       trusted-users = [
         "root"

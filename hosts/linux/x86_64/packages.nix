@@ -7,6 +7,7 @@ let
     ps: with ps; [
       portalocker-fixed
       requests
+      pip
       pyquery
     ]
   );
@@ -28,6 +29,7 @@ in
       adwaita-qt6
       adwsteamgtk
       afew
+      agate
       agenix-cli
       alot
       alsa-lib
@@ -43,6 +45,7 @@ in
       alsa-utils-nhlt
       alsaequal
       angryoxide
+      anydesk
       anyrun
       apparmor-bin-utils
       apparmor-pam
@@ -64,6 +67,7 @@ in
       ams
       ananicy-rules-cachyos
       angle
+      angular-language-server
       ansible-builder
       ant
       anyrun
@@ -72,24 +76,30 @@ in
       #argo
       arxiv-latex-cleaner
       ashell
+      asm-lsp
       astal.astal3
       astroid
+      astro-language-server
       audacity
       autobuild
       autoconf
       autogen
+      awk-language-server
       ayugram-desktop
       b43FirmwareCutter
       b43Firmware_6_30_163_46
       baobab
       baresip
+      basedpyright
       bash
+      bash-language-server
       bazel-remote
       bibata-cursors
       bemenu
       bemoji
-      binwalk
+      bicep-lsp
       binutils
+      binwalk
       biome
       bison
       bkt
@@ -97,11 +107,13 @@ in
       blend2d
       blender
       blueman
+      bluetuith
       bluez
       bluez-alsa
       bluez5
       bluez5-experimental
       bluez-headers
+      bluez-tools
       bmputil
       bottles
       brightnessctl
@@ -125,13 +137,18 @@ in
       cachix
       calamares-nixos
       calamares-nixos-extensions
+      captive-browser
       cargo
       catgirl
       cava
       ccache
       ccacheStdenv
+      ccls
       ccrypt
       certstrap
+      checkmake
+      crystalline
+      curl
       #curl-impersonate
       #curl-impersonate-ff
       cfv
@@ -139,6 +156,7 @@ in
       clang
       cliphist
       clips
+      clojure-lsp
       cmake
       cmake-language-server
       cmrt
@@ -148,17 +166,21 @@ in
       commonsCompress
       compose2nix
       conda
+      conftest
       connmanFull
       connman_dmenu
       conntrack-tools
       coppwr
       copyPkgconfigItems
+      coqPackages.coq-lsp
       coreutils
       cpufrequtils
       crane
       crate2nix
+      crates-lsp
       crc64fast-nvme
       csvs-to-sqlite
+      ctags-lsp
       cudaPackages.backendStdenv
       cudaPackages.cuda_cccl
       cudaPackages.cuda_cudart
@@ -195,6 +217,7 @@ in
       cudaPackages.nvidia_fs
       #cudaPackages.tensorrt
       cudatoolkit
+      cuelsp
       curl
       darkly
       dcap
@@ -216,6 +239,7 @@ in
       dfu-programmer
       dfu-util
       dependency-track
+      deputy
       directx-shader-compiler
       discordo
       discord-gamesdk
@@ -230,10 +254,13 @@ in
       dns-root-data
       docker
       docker-buildx
+      docker-language-server
       #dotty
+      dot-language-server
       dri-pkgconfig-stub
       drm_info
       drone-runner-docker
+      dts-lsp
       duf
       dunst
       dwl
@@ -246,13 +273,16 @@ in
       elasticsearch
       elf-header-real
       elfio
+      ember-language-server
       embree
+      emmet-language-server
       enzyme
       eresi
       ethtool
       extra-cmake-modules
       facetimehd-firmware
       f3d
+      fake-gcs-server
       fastfetch
       fastStdenv
       faust
@@ -263,8 +293,10 @@ in
       fcitx5-rime
       fcitx5-skk
       fcitx5-tokyonight
+      fdroidserver
       fdtools
       fetchutils
+      fennel-ls
       filter-audio
       findutils
       firefox
@@ -295,13 +327,17 @@ in
       gamemode
       gamenetworkingsockets
       gamescope
+      gawk
       gcab
+      gcc
       gdb
       gegl
+      getent
       geticons
       gh
       gi-docgen
       glib
+      glibc
       glew
       glucose-syrup
       gmime
@@ -316,10 +352,13 @@ in
       gsettings-qt
       ghidra
       ghostty
+      ginko
       git
       git-credential-gopass
       git-credential-keepassxc
       git-credential-manager
+      git-filter-repo
+      gitlab-ci-ls
       gitoxide
       git-secrets
       git-vendor
@@ -327,16 +366,21 @@ in
       #glfw-wayland
       glm
       glslang
+      glsl_analyzer
+      glslls
       #glxinfo
       gn
       gnome-icon-theme
+      gnugrep
       gnumake
+      gnused
       gob2
       gom
       gopass
       gopass-hibp
       gopass-jsonapi
       google-amber
+      gopls
       gpgme
       grim
       gssdp_1_6
@@ -351,10 +395,13 @@ in
       hcxtools
       hdrop
       heimdall
+      helm
+      helm-ls
       helvum
       hicolor-icon-theme
       holo-build
       hsphfpd
+      htmx-lsp2
       hw-probe
       hydra
       hypnotix
@@ -439,6 +486,7 @@ in
       ifdtool
       igsc
       inputplumber
+      intelephense
       inteltool
       inxi
       ipbus-uhal
@@ -450,18 +498,25 @@ in
       #ivsc-firmware
       jade
       jamesdsp-pulse
+      java-language-server
+      jdt-language-server
+      jinja-lsp
       jitsi
       jj
       john
       johnny
       journalwatch
+      jsonnet-language-server
       jq
+      just-lsp
       k9s
+      kcl-language-server
       kdePackages.breeze-icons
       kdePackages.dolphin
       kdePackages.fcitx5-with-addons
       kdePackages.fcitx5-configtool
       kdePackages.fcitx5-qt
+      kdePackages.partitionmanager
       kdePackages.qt6ct
       kdePackages.qtwayland
       kdePackages.qtstyleplugin-kvantum
@@ -473,11 +528,13 @@ in
       killall
       kmscon
       kmsvnc
+      kotlin-language-server
       ktls-utils
       lasuite-meet
       lcms
       ldc
       lefthook
+      lemminx
       libadwaita
       libapparmor
       libassuan
@@ -490,6 +547,7 @@ in
       libdbusmenu-gtk3
       libdecor
       libdrm
+      libesmtp
       libfprint
       libgbm
       libgee
@@ -516,7 +574,7 @@ in
       libpkgconf
       libplacebo
       librime
-      libesmtp
+      librsvg
       libsForQt5.qt5ct
       libsForQt5.qtdbusextended
       libsForQt5.qtstyleplugin-kvantum
@@ -546,6 +604,7 @@ in
       lkl
       lksctp-tools
       lldb
+      llm-ls
       llvm
       llvmPackages_21.compiler-rt
       llvmPackages_21.libllvm
@@ -555,16 +614,18 @@ in
       loupe
       louvre
       lshw
+      ltex-ls-plus
       lttng-tools
+      lua51Packages.luarocks
       lua51Packages.luarocks_bootstrap
+      lua51Packages.luarocks-build-rust-mlua
+      lua51Packages.luarocks-build-treesitter-parser
       lua5_1
+      luau-lsp
       luajitPackages.luarocks_bootstrap
       luajitPackages.luarocks
       luajitPackages.lua
       luajitPackages.magick
-      lua51Packages.luarocks
-      lua51Packages.luarocks-build-rust-mlua
-      lua51Packages.luarocks-build-treesitter-parser
       lucide
       lssecret
       lv2
@@ -580,24 +641,32 @@ in
       material-design-icons
       maturin
       maven
+      md-lsp
+      mdx-language-server
       #mcp-nixos
       meilisearch
       me_cleaner
       menu-cache
       meson
+      mesonlsp
       metabase
       microcode-intel
+      millet
       mimeo
       mimic
       mkcert
+      mlflow-server
+      mold
       monkeysphere
       morewaita-icon-theme
       moshi
       mpack
+      mpls
       mricron
       mstflint
       multiStdenv
       n2
+      nar-serve
       ncdu
       neomutt
       neovim
@@ -609,8 +678,11 @@ in
       networkmanager-l2tp
       networkmanager-openconnect
       networkmanager-strongswan
+      next-ls
       nh
       nil
+      nimlangserver
+      nimlsp
       ninja
       nix
       nixbang
@@ -687,7 +759,6 @@ in
       nixos-install-tools
       nixos-option
       nixos-rebuild
-      nixos-rebuild-ng
       nixos-shell
       nixpkgs-fmt
       nixpkgs-hammering
@@ -697,10 +768,12 @@ in
       nixpkgs-vet
       nixt
       nixtract
+      nls
       njq
       node2nix
       nodejs_latest
       nodePackages_latest.mathjax
+      noisetorch
       notmuch
       nox
       nm-file-secret-agent
@@ -760,6 +833,7 @@ in
       opencolorio
       opengrok
       openjade
+      openscad-lsp
       opensmtpd-table-redis
       opensmtpd-table-socketmap
       opensmtpd-table-sqlite
@@ -773,6 +847,7 @@ in
       os-agent
       osslsigncode
       OVMFFull
+      package-version-server
       pacman
       pam
       pam_gnupg
@@ -797,6 +872,8 @@ in
       passExtensions.pass-import
       patchage
       pavucontrol
+      perl
+      perlnavigator
       perlPackages.AlienSDL
       perf
       pfixtools
@@ -809,6 +886,7 @@ in
       pinentry-dmenu
       piper-tts
       pkgconf
+      plantuml-server
       playerctl
       pied
       pipecontrol
@@ -824,6 +902,7 @@ in
       poppler-utils
       postfix
       postfix-tlspol
+      postgres-lsp
       postgresql
       postgresql_18
       postgresql_jdbc
@@ -832,6 +911,7 @@ in
       postgrey
       postsrsd
       prefetch-npm-deps
+      prisma-language-server
       procmail
       protonplus
       protontricks
@@ -867,17 +947,24 @@ in
       ragenix
       rattler-build
       rebuilderd
+      rescript-language-server
       rofi
       rootlesskit
       rosenpass
+      roslyn-ls
       rtaudio
       rtaudio_6
+      ruby-lsp
       ruff
+      rune-languageserver
       samurai
       sbclPackages.cl-opengl
       scotch
       sbt
       sbt-extras
+      scalafix
+      serve
+      serve-d
       session-desktop
       #searxng
       shared-mime-info
@@ -887,22 +974,29 @@ in
       simpleBluez
       sink-rotate
       skeema
+      slint-lsp
       slurp
       social-engineer-toolkit
       sof-firmware
       sof-tools
+      soft-serve
+      sonarlint-ls
       sops
+      sourcekit-lsp
+      spectral-language-server
       speexdsp
       spf-engine
       spiped
       spfft
       sqlcipher
       sqldiff
+      sqlint
       sqlite
       sqlitecpp
       sqlite-utils
       sqlite-analyzer
       sqlite3-to-mysql
+      sqls
       ssh-agents
       sshd-openpgp-auth
       sshesame
@@ -920,10 +1014,14 @@ in
       steam-devices-udev-rules
       stripe-cli
       stt
+      stylelint-lsp
       styx
+      svelte-language-server
+      svlint
       sunsetr
       super-slicer-latest
       super-tiny-icons
+      superhtml
       swappy
       sway
       swaycons
@@ -942,12 +1040,17 @@ in
       systemdLibs
       tdlib
       telegram-desktop
+      terraform-lsp
+      terraform-mcp-server
       terranix
+      texlab
       texlive.combined.scheme-full
       biber
       ghostscript
       tailwindcss-language-server
+      textlsp
       themix-gui
+      thrift-ls
       thunderbird-latest
       tika
       timescaledb-parallel-copy
@@ -956,6 +1059,7 @@ in
       tk
       tlp
       tmux
+      tombi
       toml2nix
       topgrade
       tor-browser
@@ -964,9 +1068,14 @@ in
       trlib
       trousers
       truecrack-cuda
+      ts_query_ls
+      ttags
       tts
       tvm
+      ty
+      typescript-language-server
       uhd
+      ultrablue-server
       unbound-with-systemd
       ungoogled-chromium
       unix-privesc-check
@@ -979,14 +1088,18 @@ in
       upgrade-assistant
       urdfdom-headers
       usbkvm
+      uv
       uvccapture
       uwsm
       uwufetch
       usbutils
+      vala-language-server
       valkey
       vencord
+      veridian
       vesktop
       vim
+      vim-language-server
       vimix-icon-theme
       v4l-utils
       v4l2-relayd
@@ -996,9 +1109,13 @@ in
       virglrenderer
       vivaldi
       vivaldi-ffmpeg-codecs
+      vscode-json-languageserver
+      vscode-langservers-extracted
       vulnix
       waifu2x-converter-cpp
       wallust
+      wasm-language-tools
+      wasmserve
       waybar
       wayland
       waylandpp
@@ -1009,6 +1126,7 @@ in
       webrtc-audio-processing
       wev
       wget
+      wgsl-analyzer
       whisparr
       wireguard-tools
       wireless-regdb
@@ -1036,6 +1154,8 @@ in
       xwayland
       yad
       yaml2nix
+      yamllint
+      yaml-language-server
       yara
       yarn2nix
       yt-dlp
@@ -1044,6 +1164,8 @@ in
       zls
       zoom-us
       zon2nix
+      zotero
+      zotero-translation-server
       zoxide
       zram-generator
       zsh

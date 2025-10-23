@@ -1,210 +1,232 @@
 {
-  description = "Qompass AI Nix Flake";
+  description = "Qompass AI NixOS configuration";
   inputs = {
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    flake-utils.url = "github:numtide/flake-utils";
-    neovim = {
-      url = "github:nix-community/neovim-nightly-overlay";
+    agenix = {
+      type = "github";
+      owner = "ryantm";
+      repo = "agenix";
+      ref = "main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    qjp.url = "github:QompassAI/QJP";
-    flake-schemas.url = "github:DeterminateSystems/flake-schemas?ref=main";
-    nix-on-droid.url = "github:nix-community/nix-on-droid";
+    disko = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      ref = "master";
+      type = "github";
+      owner = "nix-community";
+      repo = "disko";
+    };
+    dream2nix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      ref = "main";
+      repo = "dream2nix";
+      owner = "nix-community";
+      type = "github";
+    };
+    fenix = {
+      type = "github";
+      owner = "nix-community";
+      repo = "fenix";
+      ref = "main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    flake-parts = {
+      type = "github";
+      owner = "hercules-ci";
+      repo = "flake-parts";
+      ref = "main";
+    };
+    flake-schemas = {
+      type = "github";
+      owner = "DeterminateSystems";
+      repo = "flake-schemas";
+      ref = "main";
+    };
+    flake-utils = {
+      type = "github";
+      owner = "numtide";
+      repo = "flake-utils";
+      ref = "main";
+    };
+    hyprland = {
+      type = "github";
+      owner = "hyprwm";
+      repo = "Hyprland";
+      ref = "main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprland-plugins = {
+      type = "github";
+      owner = "hyprwm";
+      repo = "hyprland-plugins";
+      ref = "main";
+      inputs.hyprland.follows = "hyprland";
+    };
+    impermanence = {
+      type = "github";
+      owner = "nix-community";
+      repo = "impermanence";
+      ref = "master";
+    };
+    kernel-overlay = {
+      type = "github";
+      owner = "andreoss";
+      repo = "kernel-overlay";
+      ref = "master";
+    };
+    lanzaboote = {
+      type = "github";
+      owner = "nix-community";
+      repo = "lanzaboote";
+      ref = "master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    lix = {
+      type = "git";
+      url = "https://git.lix.systems/lix-project/lix";
+    };
+    lix-module = {
+      type = "git";
+      url = "https://git.lix.systems/lix-project/nixos-module";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.lix.follows = "lix";
+    };
+    neovim = {
+      type = "github";
+      owner = "nix-community";
+      repo = "neovim-nightly-overlay";
+      ref = "master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-index-database = {
+      type = "github";
+      owner = "Mic92";
+      repo = "nix-index-database";
+      ref = "main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-generators = {
+      type = "github";
+      owner = "nix-community";
+      repo = "nixos-generators";
+      ref = "master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-hardware = {
+      type = "github";
+      owner = "nixos";
+      repo = "nixos-hardware";
+    };
+    nixpkgs = {
+      type = "github";
+      owner = "nixos";
+      repo = "nixpkgs";
+      ref = "nixos-unstable";
+
+    };
+    nixvim = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      owner = "nix-community";
+      type = "github";
+      repo = "nixvim";
+      ref = "main";
+    };
+    nur = {
+      type = "github";
+      owner = "nix-community";
+      repo = "nur";
+      ref = "master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    poetry2nix = {
+      type = "github";
+      owner = "nix-community";
+      repo = "poetry2nix";
+      ref = "master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    rust-overlay = {
+      type = "github";
+      owner = "oxalica";
+      repo = "rust-overlay";
+      ref = "master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    sops-nix = {
+      type = "github";
+      owner = "Mic92";
+      repo = "sops-nix";
+      ref = "master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
-    inputs@{ self
-    , flake-parts
-    , nixpkgs
-    , nixpkgs-unstable
-    , qjp
-    , flake-schemas
-    , nix-on-droid
-    , ...
-    }:
+    inputs@{ nixpkgs, self, ... }:
     let
-      flakePartsOutputs = flake-parts.lib.mkFlake { inherit inputs; } (
-        let
-          nixosModules = {
-            boot = import ./modules/boot/boot.nix;
-            hardware = import ./modules/hardware/hardware.nix;
-            hyprlandConfig = import ./modules/hyprland-config.nix;
-            nvidia = import ./modules/hardware/nvidia.nix;
-            languages = import ./modules/dev/lang.nix;
-          };
-          hardwareConfigs = {
-            orin-agx-devkit = {
-              som = "orin-agx";
-              carrierBoard = "devkit";
-            };
-            orin-nx-devkit = {
-              som = "orin-nx";
-              carrierBoard = "devkit";
-            };
-            orin-nano-devkit = {
-              som = "orin-nano";
-              carrierBoard = "devkit";
-            };
-            orin-nx-devkit-super = {
-              som = "orin-nx";
-              carrierBoard = "devkit";
-              super = true;
-            };
-            orin-nano-devkit-super = {
-              som = "orin-nano";
-              carrierBoard = "devkit";
-              super = true;
-            };
-          };
-          mkJetsonConfig = { name, som, carrierBoard, super ? false }:
-            nixpkgs.lib.nixosSystem {
-              system = "aarch64-linux";
-              modules = [
-                ./modules/common.nix
-                qjp.nixosModules.default
-                {
-                  hardware.nvidia-jetpack.enable = true;
-                  hardware.nvidia-jetpack.som = som;
-                  hardware.nvidia-jetpack.carrierBoard = carrierBoard;
-                  hardware.nvidia-jetpack.super = super;
-                  networking.hostName = name;
-                }
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-android"
+      ];
+      forAllSystems =
+        f:
+        nixpkgs.lib.genAttrs systems (
+          system:
+          f {
+            inherit system;
+            pkgs = import nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = [
+                (import ./overlays/default.nix { inherit inputs; })
               ];
-              specialArgs = { nixpkgs = nixpkgs; };
             };
-          jetsonConfigs =
-            nixpkgs.lib.mapAttrs (n: cfg: mkJetsonConfig ({ name = n; } // cfg))
-              hardwareConfigs;
-        in
+          }
+        );
+    in
+    {
+      devShells = forAllSystems (
+        { pkgs, system, ... }:
         {
-          systems = [ "x86_64-linux" "aarch64-linux" ];
-          perSystem = { system, pkgs, ... }:
-            let
-              unstable = import nixpkgs-unstable { inherit system; };
-              mkBasePackages = with pkgs; [
-                blender
-                btop
-                cava
-                chezmoi
-                cmake
-                conda
-                curl
-                direnv
-                docker
-                dunst
-                easyeffects
-                firejail
-                fish
-                fuzzel
-                fzf
-                gpg
-                gh
-                git
-                jq
-                khal
-                libreoffice
-                lua
-                maven
-                mypaint
-                neomutt
-                neovim
-                nix
-                nixpkgs-fmt
-                nodejs
-                nvfetcher
-                nvimpager
-                pgadmin4
-                pip
-                pipewire
-                pnpm
-                postgresql
-                python3
-                python3Packages.pytest
-                qt5ct
-                qt6ct
-                R
-                rage
-                sass
-                sops
-                sqlite
-                steam
-                tor-browser-bundle-bin
-                unbound
-                waybar
-                wget
-                wireguard-tools
-                wofi
-                zig
-                zls
-                unstable.nil
-              ];
-            in
-            {
-              devShells.default = pkgs.mkShell {
-                packages = mkBasePackages;
-                shellHook = ''
-                  export NIX_CFLAGS_COMPILE="-march=native"
-                  echo "✅ Qompass AI DevShell Loaded for ${system}"
-                '';
-              };
-              packages.default = pkgs.buildEnv {
-                name = "qompassai-env";
-                paths = mkBasePackages;
-              };
-            };
-          nixosConfigurations = jetsonConfigs // {
-            x86_64-linux = nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                nixosModules.boot
-                ./hosts/x86_64-linux/config.nix # <-- FIXED PATH HERE
-                nixosModules.hardware
-                nixosModules.hyprlandConfig
-              ];
-              specialArgs = { nixpkgs = nixpkgs; };
-            };
-            aarch64-linux = nixpkgs.lib.nixosSystem {
-              system = "aarch64-linux";
-              modules = [
-                ./hosts/aarch64-linux/config.nix # <-- FIXED PATH HERE
-                nixosModules.boot
-                nixosModules.hardware
-                nixosModules.nvidia
-                nixosModules.hyprlandConfig
-              ];
-              specialArgs = { nixpkgs = nixpkgs; };
-            };
+          default = import ./devshells.nix { inherit inputs pkgs system; };
+          android = pkgs.mkShell {
+            name = "android-dev";
+            buildInputs = with pkgs; [
+              jdk
+              android-tools
+              (pkgs.androidenv.composeAndroidPackages {
+                cmdLineToolsVersion = "8.0";
+                includeNDK = true;
+                includePlatformTools = true;
+                platformVersions = [
+                  "33"
+                  "35"
+                ];
+              }).androidsdk
+            ];
+            ANDROID_HOME = "${pkgs.androidenv.androidsdk}/libexec/android-sdk";
           };
-          flake = { inherit (flake-schemas) schemas; };
         }
       );
-    in
-    flakePartsOutputs // {
-      nix-on-droid = {
-        configurations = {
-          default = {
-            modules = [ ./nix-on-droid.nix ];
-            specialArgs = {
-              nixpkgs = nixpkgs;
-              androidPackages = with nixpkgs.legacyPackages.aarch64-linux; [
-                btop
-                curl
-                git
-                jq
-                neomutt
-                nixpkgs-fmt
-                python3
-                sops
-                wget
-                wireguard-tools
-                zls
-              ];
-            };
+      formatter = forAllSystems ({ pkgs, ... }: pkgs.callPackage ./treefmt.nix { });
+      nixosConfigurations = {
+        primo = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit self inputs;
+            username = "phaedrus";
           };
+          modules = [ (import ./hosts/linux/x86_64) ];
+        };
+        armhost = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = {
+            inherit self inputs;
+            username = "phaedrus";
+          };
+          modules = import ./modules/modules-list.nix { inherit inputs; } ++ [
+            inputs.lix-module.nixosModules.default
+          ];
         };
       };
     };
 }
-
-

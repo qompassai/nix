@@ -1,13 +1,18 @@
-# programs.nix
-# Qompass AI - [Add description here]
+# /qompassai/nix/hosts/linux/x86_64/programs.nix
+# Qompass AI Linux X86_64 Programs Config
 # Copyright (C) 2025 Qompass AI, All rights reserved
-# ----------------------------------------
+####################################################
 { inputs, pkgs, ... }:
 {
   programs = {
     bash = {
-      completion.enable = true;
+      completion = {
+        enable = true;
+        package = pkgs.bash-completion;
+      };
       enable = true;
+      enableLsColors = true;
+      vteIntegration = true;
     };
     captive-browser = {
       bindInterface = true;
@@ -52,7 +57,10 @@
         functions.enable = true;
       };
     };
-    fuse.userAllowOther = true;
+    fuse = {
+      enable = true;
+      userAllowOther = true;
+    };
     fzf.fuzzyCompletion = true;
     git = {
       enable = true;
@@ -62,6 +70,9 @@
       };
       prompt.enable = true;
     };
+    gdk-pixbuf = {
+      modulePackages = [ pkgs.librsvg ];
+    };
     gnupg = {
       agent = {
         enable = true;
@@ -69,6 +80,23 @@
         enableExtraSocket = true;
         enableSSHSupport = true;
         pinentryPackage = pkgs.pinentry-all;
+        settings = {
+          allow-loopback-pinentry = true;
+          allow-preset-passphrase = true;
+          "debug-level" = "guru";
+          "default-cache-ttl" = 86400;
+          "default-cache-ttl-ssh" = 14400;
+          disable-scdaemon = true;
+          enable-extended-key-format = true;
+          enable-ssh-support = true;
+          ignore-cache-for-signing = true;
+          "log-file" = "/home/phaedrus/.gnupg/gpg-agent.log";
+          "max-cache-ttl" = 604800;
+          no-allow-external-cache = true;
+          no-allow-mark-trusted = true;
+          "scdaemon-program" = "/dev/null";
+          "ssh-fingerprint-digest" = "SHA256";
+        };
       };
       dirmngr.enable = true;
     };
@@ -80,10 +108,14 @@
       xwayland.enable = true;
     };
     java.enable = true;
+    msmtp = {
+      setSendmail = true;
+    };
     mtr.enable = true;
     neovim = {
       defaultEditor = true;
       enable = true;
+      withNodeJs = true;
       withPython3 = true;
       withRuby = true;
     };
@@ -113,12 +145,39 @@
       presets.nvidia-gpu.enable = true;
     };
     nm-applet.indicator = true;
+    noisetorch = {
+      enable = true;
+      package = pkgs.noisetorch;
+    };
     schroot = {
       enable = true;
     };
     obs-studio = {
       enable = true;
       enableVirtualCamera = true;
+        plugins = with pkgs.obs-studio-plugins; [
+    looking-glass-obs
+    obs-3d-effect
+    obs-backgroundremoval
+    obs-browser-transition
+    obs-composite-blur
+    obs-gstreamer
+    input-overlay
+    obs-markdown
+    obs-media-controls
+    obs-noise
+    obs-pipewire-audio-capture
+    obs-recursion-effect
+    obs-rgb-levels
+    obs-scale-to-sound
+    obs-source-record
+    obs-source-switcher
+    obs-text-pthread
+    obs-vkcapture
+    obs-vaapi
+    obs-vnc
+    waveform
+  ];
     };
     seahorse.enable = true;
     ssh = {
@@ -132,7 +191,10 @@
     };
     sway = {
       enable = true;
-      wrapperFeatures.gtk = true;
+      wrapperFeatures = {
+        base = true;
+        gtk = true;
+      };
     };
     thunar = {
       enable = true;
@@ -147,6 +209,8 @@
     virt-manager.enable = true;
     waybar.enable = true;
     xwayland.enable = true;
+    ydotool.enable = true;
+    zoom-us.enable = true;
     zoxide = {
       enable = true;
     };

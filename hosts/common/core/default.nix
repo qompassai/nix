@@ -2,7 +2,15 @@
 # Qompass AI Nix Common Host Core Defaults
 # Copyright (C) 2025 Qompass AI, All rights reserved
 ####################################################
-{ inputs, outputs, config, lib, pkgs, isDarwin, ... }:
+{
+  inputs,
+  outputs,
+  config,
+  lib,
+  pkgs,
+  isDarwin,
+  ...
+}:
 let
   platform = if isDarwin then "darwin" else "nixos";
   platformModules = "${platform}Modules";
@@ -25,20 +33,26 @@ in
   hostSpec = {
     username = "ta";
     handle = "emergentmind";
-    inherit (inputs.nix-secrets) domain email userFullName networking;
+    inherit (inputs.nix-secrets)
+      domain
+      email
+      userFullName
+      networking
+      ;
   };
   networking.hostName = config.hostSpec.hostName;
   environment.systemPackages = [ pkgs.openssh ];
   nixpkgs = {
     overlays = [ outputs.overlays.default ];
-    config = { allowUnfree = true; };
+    config = {
+      allowUnfree = true;
+    };
   };
   nix = {
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}")
-      config.nix.registry;
+    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
     settings = {
-      abort-on-warn = true;
+      abort-on-warn = false;
       accept-flake-config = true;
       auto-optimise-store = true;
       connect-timeout = 5;
@@ -96,8 +110,7 @@ in
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
       ];
-      upgrade-nix-store-path-url =
-        "https://github.com/NixOS/nixpkgs/raw/master/nixos/modules/installer/tools/nix-fallback-paths.nix";
+      upgrade-nix-store-path-url = "https://github.com/NixOS/nixpkgs/raw/master/nixos/modules/installer/tools/nix-fallback-paths.nix";
       use-registries = true;
       use-sqlite-wal = true;
       use-xdg-base-directories = true;
@@ -106,7 +119,6 @@ in
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    promptInit =
-      "source ''${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+    promptInit = "source ''${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
   };
 }
