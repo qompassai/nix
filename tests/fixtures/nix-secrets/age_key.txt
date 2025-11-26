@@ -1,6 +1,0 @@
-# /qompassai/nix/tests/fixtures/nix-secrets/age_key.txt
-# Qompass AI Age Key Config
-# Copyright (C) 2025 Qompass AI, All rights reserved
-# ----------------------------------------
-# public key: age1uq2uymv63r4h5r47vkuhjz3hcz9rv48df8u5jt8zeejgt2wzme3qz3se8y
-AGE-SECRET-KEY-1Z7AENV0K5VRCV87EDK2XYE4ZWJ3G39W7J3TEAWQSX2F46NGWL4FQ6QKGLE
