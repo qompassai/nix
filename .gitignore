@@ -1,0 +1,11 @@
+# /qompassai/nix/.gitignore
+# Qompass AI Nix Gitignore
+# Copyright (C) 2025 Qompass AI, All rights reserved
+################################################### 
+.pre-commit-config.yaml
+.direnv
+.forge
+tmp
+result
+latest.iso
+texput.log
