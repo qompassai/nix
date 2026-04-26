@@ -1,5 +1,5 @@
 # /qompassai/nix/treefmt.nix
-# Qompass AI Tree Formater
+# Qompass AI Tree Formatter
 # Copyright (C) 2025 Qompass AI, All rights reserved
 ####################################################
 {
