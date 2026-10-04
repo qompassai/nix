@@ -5,8 +5,8 @@ generic Nix flake any repo can consume.
 
 ## What it does
 
-`repomap /path/to/repo` walks a repo's Rust sources, parses them with
-tree-sitter, ranks definitions by cross-file references (qualified calls
+`repomap /path/to/repo` walks a repo's text files, parses Rust with
+tree-sitter (other languages get shallow structure extraction), ranks definitions by cross-file references (qualified calls
 like `T::m`, type-position references, module paths — not bare-name
 frequency), and writes a budgeted map: the highest-signal definitions
 first, then a complete per-file table of contents. Agents read the map
@@ -31,7 +31,7 @@ devShells.default = pkgs.mkShell {
 Add `.repomap.txt` to your `.gitignore` — it is a derived artifact.
 
 Every `nix develop` / direnv entry then regenerates `$PWD/.repomap.txt`
-whenever any `.rs` file is newer than it, and does nothing when the tree
+whenever any text file is newer than it, and does nothing when the tree
 is unchanged. One-shot generation without the hook:
 
 ```
