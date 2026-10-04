@@ -1,8 +1,8 @@
 # repomap — always-fresh codebase maps for coding agents.
 #
 # A generic flake: add it as an input to ANY repo's flake.nix and the repo
-# gets a ranked, budgeted map of its Rust codebase, regenerated automatically
-# whenever sources change under the dev shell.
+# gets a ranked, budgeted map of its codebase (all text files, not just Rust),
+# regenerated automatically whenever sources change under the dev shell.
 #
 # Consumer wiring (in the consuming repo's flake.nix):
 #
@@ -20,7 +20,7 @@
 #       });
 #
 # Then every `nix develop` (or direnv `use flake`) refreshes
-# `$PWD/.repomap.txt` — a derived, gitignored artifact — whenever a `.rs`
+# `$PWD/.repomap.txt` — a derived, gitignored artifact — whenever any text
 # file is newer than it. One-shot: `nix run .#repomap -- /path/to/repo`.
 {
   description = "repomap — ranked, budgeted codebase maps for coding agents";
@@ -90,7 +90,7 @@
         formatter = pkgs.alejandra;
       })) // {
         # refreshHook: drop-in dev-shell hook for any repo. Regenerates
-        # <root>/.repomap.txt only when a .rs file is newer than it, so
+        # <root>/.repomap.txt only when any text file is newer than it, so
         # entering the shell stays cheap when nothing changed.
         #
         #   shellHook = repomap.lib.refreshHook {
@@ -98,13 +98,27 @@
         #   };
         lib.refreshHook = { pkg, root ? "$PWD", out ? ".repomap.txt", budget ? 15000 }: ''
           _repomap_out="${root}/${out}"
-          if [ ! -f "$_repomap_out" ] || [ -n "$(find "${root}" -name '*.rs' -newer "$_repomap_out" 2>/dev/null | head -1)" ]; then
+          # Check if any text file (not just .rs) is newer than the map.
+          # Excludes .git, the output file itself, and common build dirs.
+          _repomap_stale=""
+          if [ ! -f "$_repomap_out" ]; then
+            _repomap_stale="1"
+          else
+            _repomap_stale="$(find "${root}" -type f \
+              -not -path "*/.git/*" \
+              -not -path "*/target/*" \
+              -not -path "*/node_modules/*" \
+              -not -path "*/__pycache__/*" \
+              -not -name ".repomap.txt" \
+              -newer "$_repomap_out" 2>/dev/null | head -1)"
+          fi
+          if [ -n "$_repomap_stale" ]; then
             echo "repomap: refreshing $_repomap_out…" >&2
             ${pkg}/bin/repomap "${root}" --budget ${toString budget} --out "$_repomap_out" >/dev/null 2>&1 \
               && echo "repomap: wrote $_repomap_out" >&2 \
               || echo "repomap: generation failed (non-fatal)" >&2
           fi
-          unset _repomap_out
+          unset _repomap_out _repomap_stale
         '';
 
         templates.default = {
