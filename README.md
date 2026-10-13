@@ -428,4 +428,5 @@ Where:
 
 ## License
 
-This project is licensed under the Apache License 2.0 — see [LICENSE](./LICENSE) for the full text.
+This project is licensed under the [Apache License, Version 2.0](./LICENSE).
+
