@@ -38,7 +38,7 @@
     {
       "identifier": "https://orcid.org/0000-0002-0302-4812",
       "relation": "isAuthorOf",
-      "resource_type": "person"
+      "resource_type": "other"
     },
     {
       "identifier": "https://github.com/qompassai/nix/actions",
@@ -48,17 +48,17 @@
     {
       "identifier": "https://loop.frontiersin.org/people/2230223",
       "relation": "isAuthorOf",
-      "resource_type": "person"
+      "resource_type": "other"
     },
     {
       "identifier": "https://www.webofscience.com/wos/author/HNQ-0292-2023",
       "relation": "isIdenticalTo",
-      "resource_type": "person"
+      "resource_type": "other"
     },
     {
       "identifier": "https://www.scopus.com/authid/detail.uri?authorId=57385910700",
       "relation": "isIdenticalTo",
-      "resource_type": "person"
+      "resource_type": "other"
     }
   ],
   "communities": [
