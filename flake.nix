@@ -160,7 +160,24 @@
     };
   };
   outputs =
-    inputs@{ nixpkgs, self, ... }:
+    inputs@{
+      flake-parts,
+      flake-utils,
+      hyprland,
+      hyprland-plugins,
+      lix,
+      lix-module,
+      nix-index-database,
+      nixos-generators,
+      nixos-hardware,
+      nixvim,
+      nixpkgs,
+      nur,
+      poetry2nix,
+      sops-nix,
+      self,
+      ...
+    }:
     let
       systems = [
         "x86_64-linux"
@@ -175,9 +192,12 @@
             inherit system;
             pkgs = import nixpkgs {
               inherit system;
-              config.allowUnfree = true;
+              config = {
+                allowUnfree = true;
+                android_sdk.accept_license = true;
+              };
               overlays = [
-                (import ./overlays/default.nix { inherit inputs; })
+                (import ./overlays/default.nix { inherit inputs system; })
               ];
             };
           }
@@ -185,40 +205,12 @@
     in
     {
       devShells = forAllSystems (
-        { pkgs, system, ... }:
-        {
-          default = import ./devshells.nix { inherit inputs pkgs system; };
-          android = pkgs.mkShell {
-            name = "android-dev";
-            buildInputs = with pkgs; [
-              jdk
-              android-tools
-              (pkgs.androidenv.composeAndroidPackages {
-                cmdLineToolsVersion = "8.0";
-                includeNDK = true;
-                includePlatformTools = true;
-                platformVersions = [
-                  "33"
-                  "35"
-                ];
-              }).androidsdk
-            ];
-            ANDROID_HOME = "${pkgs.androidenv.androidsdk}/libexec/android-sdk";
-          };
-        }
+        { pkgs, system, ... }: (import ./devshells.nix { inherit inputs pkgs system; })
       );
       formatter = forAllSystems ({ pkgs, ... }: pkgs.callPackage ./treefmt.nix { });
       nixosConfigurations = {
         primo = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = {
-            inherit self inputs;
-            username = "phaedrus";
-          };
-          modules = [ (import ./hosts/linux/x86_64) ];
-        };
-        armhost = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
           specialArgs = {
             inherit self inputs;
             username = "phaedrus";

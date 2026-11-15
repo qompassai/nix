@@ -155,29 +155,29 @@
     obs-studio = {
       enable = true;
       enableVirtualCamera = true;
-        plugins = with pkgs.obs-studio-plugins; [
-    looking-glass-obs
-    obs-3d-effect
-    obs-backgroundremoval
-    obs-browser-transition
-    obs-composite-blur
-    obs-gstreamer
-    input-overlay
-    obs-markdown
-    obs-media-controls
-    obs-noise
-    obs-pipewire-audio-capture
-    obs-recursion-effect
-    obs-rgb-levels
-    obs-scale-to-sound
-    obs-source-record
-    obs-source-switcher
-    obs-text-pthread
-    obs-vkcapture
-    obs-vaapi
-    obs-vnc
-    waveform
-  ];
+      plugins = with pkgs.obs-studio-plugins; [
+        looking-glass-obs
+        obs-3d-effect
+        obs-backgroundremoval
+        obs-browser-transition
+        obs-composite-blur
+        obs-gstreamer
+        input-overlay
+        obs-markdown
+        obs-media-controls
+        obs-noise
+        obs-pipewire-audio-capture
+        obs-recursion-effect
+        obs-rgb-levels
+        obs-scale-to-sound
+        obs-source-record
+        obs-source-switcher
+        obs-text-pthread
+        obs-vkcapture
+        obs-vaapi
+        obs-vnc
+        waveform
+      ];
     };
     seahorse.enable = true;
     ssh = {
@@ -213,6 +213,30 @@
     zoom-us.enable = true;
     zoxide = {
       enable = true;
+    };
+    zsh = {
+      enable = true;
+      enableCompletion = true;
+      ohMyZsh = {
+        enable = true;
+        plugins = [ "git" ];
+        theme = "agnoster";
+      };
+      autosuggestions.enable = true;
+      syntaxHighlighting.enable = true;
+      promptInit = ''
+        fastfetch -c $HOME/.config/fastfetch/config-compact.jsonc
+        alias ls='lsd'
+        alias l='ls -l'
+        alias la='ls -a'
+        alias lla='ls -la'
+        alias lt='ls --tree'
+        source <(fzf --zsh)
+        HISTFILE=~/.zsh_history
+        HISTSIZE=10000
+        SAVEHIST=10000
+        setopt appendhistory
+      '';
     };
   };
 }

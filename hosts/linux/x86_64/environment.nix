@@ -5,6 +5,11 @@
 { pkgs, ... }:
 {
   environment = {
+    debuginfodServers = [
+      "https://debuginfod.nixos.org/"
+    ];
+    enableAllTerminfo = true;
+    enableDebugInfo = true;
     etc = {
       "OpenCL/vendors/intel.icd" = {
         text = "${pkgs.intel-compute-runtime}/lib/libigdrcl.so";
@@ -15,6 +20,15 @@
         '';
       };
     };
+    localBinInPath = true;
+    memoryAllocator = {
+      provider = "mimalloc";
+    };
+    pathsToLink = [
+      "/bin"
+      "/share"
+      "/lib"
+    ];
     shellAliases = {
       "nix" = "nix --log-format bar-with-logs";
       "nix-build" = "nix-build --fast --log-format bar-with-logs";
@@ -25,8 +39,15 @@
     };
     sessionVariables = {
       GDK_BACKEND = "wayland,x11,*";
+      LIBVIRT_DEFAULT_URI = "qemu:///system";
       NIXOS_OZONE_WL = "1";
+      TERMINAL = "ghostty";
     };
+    unixODBCDrivers = with pkgs.unixODBCDrivers; [
+      mariadb
+      psql
+      sqlite
+    ];
     variables = {
       NIX_REMOTE = "daemon";
       NIX_USE_CCACHE = "1";

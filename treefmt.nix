@@ -1,5 +1,5 @@
 # /qompassai/nix/treefmt.nix
-# Qompass AI Tree Formatter
+# Qompass AI NixOS Tree Formater
 # Copyright (C) 2025 Qompass AI, All rights reserved
 ####################################################
 {
@@ -8,5 +8,6 @@
     alejandra.enable = true;
     shellcheck.enable = true;
     shfmt.enable = true;
+    statix.enable = true;
   };
 }

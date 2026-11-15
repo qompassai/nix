@@ -1,7 +1,8 @@
 # /etc/nixos/hosts/linux/x86_64/config.nix
-# Qompass AI Nixos Linux x86_64 Config
+# Qompass AI NixOS x86_64-linux Config
 # Copyright (C) 2025 Qompass AI, All rights reserved
-{ inputs, ... }:
+####################################################
+{ inputs, lib, ... }:
 {
   imports = [
     ./boot.nix
@@ -9,7 +10,8 @@
     ./hardware.nix
     ./misc.nix
     ./nix.nix
-    ./packages.nix
+    #./packages.nix
+    ./packages/core.nix
     ./programs.nix
     ./security.nix
     ./services.nix
@@ -18,6 +20,7 @@
     ./xdg.nix
   ];
   i18n = {
+    defaultCharset = "UTF-8";
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
       LC_ADDRESS = "en_US.UTF-8";
@@ -32,26 +35,37 @@
     };
     inputMethod = {
       enable = true;
+      enableGtk2 = true;
+      enableGtk3 = true;
+      uim = {
+        toolbar = "gtk3-systray";
+      };
       type = "fcitx5";
       fcitx5 = {
-        waylandFrontend = true;
+        ignoreUserConfig = false;
         settings = {
-          globalOptions = {
-          };
+          #  globalOptions = {
+          # };
         };
+        waylandFrontend = true;
       };
+    };
+    localeCharsets = {
+      LC_MESSAGES = "ISO-8859-15";
+      #LC_TIME = "ISO-8859-1";
     };
   };
   nixpkgs = {
     buildPlatform = "x86_64-linux";
     config = {
-      allowAliases = false;
-      allowBroken = false;
+      allowAliases = true;
+      allowBroken = true;
       allowUnfree = true;
-      allowUnsupportedSystem = false;
+      allowUnsupportedSystem = true;
       checkMeta = false;
-      cudaSupport = true;
-      enableParallelBuildingByDefault = true;
+      #cudaSupport = true;
+      doCheckByDefault = false;
+      enableParallelBuildingByDefault = false;
       hashedMirrors = [
         "https://cache.nixos.org/tarballs"
         "https://mirror.csclub.uwaterloo.ca/nixpkgs"
@@ -62,27 +76,9 @@
         "https://tarballs.nixos.org"
         "https://releases.nixos.org"
       ];
-      hostPlatform = "x86_64-linux";
+      hostPlatform = lib.mkDefault "x86_64-linux";
       localSystem = "x86_64-linux";
-      overlays = [
-        (final: prev: {
-          passt = prev.passt.overrideAttrs (old: {
-            meta = (old.meta or { }) // {
-              maintainers = [ ];
-            };
-          });
-        })
-        (final: prev: {
-          passt = null;
-        })
-        (final: prev: {
-          hypr-unstable = inputs.hyprland.packages.${prev.stdenv.hostPlatform.system}.hyprland;
-        })
-         (final: prev: {
-          bison = prev.bison.overrideAttrs (old: { doCheck = false; });
-        })
-      ];
-      strictDepsByDefault = true;
+      strictDepsByDefault = false;
       structuredAttrsByDefault = false;
       warnUndeclaredOptions = false;
     };
@@ -103,6 +99,12 @@
       enable = true;
       allowReboot = false;
       dates = "weekly";
+      flake = inputs.self.outPath;
+      flags = [
+        "--update-input"
+        "nixpkgs"
+        "-L"
+      ];
       operation = "switch";
       randomizedDelaySec = "3600";
     };
@@ -112,7 +114,7 @@
     switch.enable = true;
     tools = {
       nixos-enter.enable = true;
-      nixos-generate-config.enable = true;
+      nixos-generate-config.enable = false;
       nixos-option.enable = true;
       nixos-rebuild.enable = true;
     };
@@ -123,6 +125,7 @@
       ManagedOOMMemoryPressureLimit = "50%";
     };
     services."nix-daemon".serviceConfig = {
+      LimitNOFILE = 1048576;
       Slice = "nix-daemon.slice";
       OOMScoreAdjust = 1000;
     };

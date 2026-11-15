@@ -1,7 +1,7 @@
-# xdg.nix
-# Qompass AI - [Add description here]
+# /qompassai/nix/hosts/linux/x86_64/xdg.nix
+# Qompass AI x86_64-linux XDG Config
 # Copyright (C) 2025 Qompass AI, All rights reserved
-# ----------------------------------------
+####################################################
 { pkgs, ... }:
 {
   xdg = {
@@ -13,7 +13,7 @@
     terminal-exec.enable = true;
     portal = {
       enable = true;
-      wlr.enable = false;
+      wlr.enable = true;
       xdgOpenUsePortal = true;
       config = {
         common.default = [
@@ -25,8 +25,12 @@
           "gtk"
         ];
       };
-      extraPortals = [
+      configPackages = [
         pkgs.xdg-desktop-portal-hyprland
+        pkgs.xdg-desktop-portal-gtk
+        pkgs.xdg-desktop-portal
+      ];
+      extraPortals = [
         pkgs.xdg-desktop-portal-gtk
         pkgs.xdg-desktop-portal-shana
         pkgs.xdg-desktop-portal-termfilechooser

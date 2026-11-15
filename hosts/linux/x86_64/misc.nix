@@ -1,7 +1,7 @@
-# fonts.nix
-# Qompass AI - [Add description here]
+# /qompassai/nix/hosts/linux/x86_64_misc.nix
+# Qompass AI NixOS x86_64-linux/misc.nix
 # Copyright (C) 2025 Qompass AI, All rights reserved
-# ----------------------------------------
+####################################################
 { pkgs, ... }:
 {
   console = {
@@ -10,22 +10,10 @@
   };
   fonts = {
     fontconfig = {
-      cache32Bit = true;
-      enable = true;
-      includeUserConf = true;
       allowBitmaps = false;
       allowType1 = true;
-      useEmbeddedBitmaps = false;
       antialias = true;
-      hinting = {
-        autohint = true;
-        enable = true;
-        style = "full";
-      };
-      subpixel = {
-        rgba = "rgb";
-        lcdfilter = "default";
-      };
+      cache32Bit = true;
       defaultFonts = {
         serif = [
           "DaddyTimeMono Nerd Font"
@@ -41,6 +29,18 @@
         ];
         emoji = [ "Noto Color Emoji" ];
       };
+      enable = true;
+      hinting = {
+        autohint = true;
+        enable = true;
+        style = "full";
+      };
+      includeUserConf = true;
+      useEmbeddedBitmaps = false;
+      subpixel = {
+        lcdfilter = "default";
+        rgba = "rgb";
+      };
     };
     fontDir = {
       enable = true;
@@ -49,6 +49,8 @@
     packages = with pkgs; [
       fira-code
       font-awesome
+      material-symbols
+      inter
       noto-fonts
       noto-fonts-cjk-sans
       terminus_font

@@ -1,7 +1,7 @@
-# security.nix
+# /qompassai/nix/hosts/linux/x86_64/security.nix
 # Qompass AI NixOS x86_64 Security Config
 # Copyright (C) 2025 Qompass AI, All rights reserved
-# ----------------------------------------
+####################################################
 { lib, pkgs, ... }:
 {
   security = {
@@ -9,7 +9,7 @@
       acceptTerms = true;
       defaults = {
         group = "acme";
-        keyType = "ec384"; 
+        keyType = "ec384";
       };
     };
     apparmor = {
@@ -57,6 +57,20 @@
     };
     pam = {
       enableFscrypt = true;
+      loginLimits = [
+        {
+          domain = "nixbld*";
+          type = "soft";
+          item = "nofile";
+          value = "4096";
+        }
+        {
+          domain = "nixbld*";
+          type = "hard";
+          item = "nofile";
+          value = "8192";
+        }
+      ];
       services = {
         login.fprintAuth = true;
         sudo.fprintAuth = true;

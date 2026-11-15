@@ -1,9 +1,13 @@
-# Qompass AI NixOS variables module
+# /qompassai/nix/hosts/linux/x86_64/variables.nix
+# Qompass AI Nixos x86_64-linux Variables Config
+# Copyright (C) 2025 Qompass AI, All rights reserved
+####################################################
 {
   config,
   lib,
   ...
-}: {
+}:
+{
   config = {
     environment.sessionVariables.XDG_DATA_DIRS = lib.mkForce "/run/current-system/sw/share:/home/phaedrus/.nix-profile/share:/home/phaedrus/.local/share:/usr/local/share:/usr/share";
   };

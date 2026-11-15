@@ -1,9 +1,14 @@
+# /qompassai/nix/hosts/linux/x86_64/users.nix
+# Qompass AI Nixos x86_64-linux User Config
+# Copyright (C) 2025 Qompass AI, All rights reserved
+####################################################
 {
   config,
   pkgs,
   username,
   ...
-}: {
+}:
+{
   users = {
     mutableUsers = true;
     users."${username}" = {
@@ -12,46 +17,28 @@
       description = config.gitUsername;
       extraGroups = [
         "audio"
+        "docker"
         "input"
-        "networkmanager"
         "libvirtd"
         "lp"
-        "scanner"
+        "networkmanager"
         "render"
+        "scanner"
         "video"
         "wheel"
       ];
       shell = pkgs.bash;
-      packages = with pkgs; [];
+      packages = with pkgs; [ bash ];
     };
   };
   users.defaultUserShell = pkgs.bash;
-  environment.shells = with pkgs; [zsh bashInteractive];
-  environment.systemPackages = with pkgs; [lsd fzf];
-  programs = {
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      ohMyZsh = {
-        enable = true;
-        plugins = ["git"];
-        theme = "agnoster";
-      };
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
-      promptInit = ''
-        fastfetch -c $HOME/.config/fastfetch/config-compact.jsonc
-        alias ls='lsd'
-        alias l='ls -l'
-        alias la='ls -a'
-        alias lla='ls -la'
-        alias lt='ls --tree'
-        source <(fzf --zsh)
-        HISTFILE=~/.zsh_history
-        HISTSIZE=10000
-        SAVEHIST=10000
-        setopt appendhistory
-      '';
-    };
-  };
+  environment.shells = with pkgs; [
+    zsh
+    bash
+    fish
+  ];
+  environment.systemPackages = with pkgs; [
+    lsd
+    fzf
+  ];
 }

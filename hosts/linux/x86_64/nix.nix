@@ -22,9 +22,9 @@
     daemonIOSchedPriority = 0;
     distributedBuilds = false;
     enable = true;
-    extraOptions = ''
-      plugin-files = ${pkgs.nix-plugins}/lib/nix/plugins
-    '';
+    #extraOptions = ''
+    #  plugin-files = ${pkgs.nix-plugins}/lib/nix/plugins
+    #'';
     gc = {
       automatic = false;
       dates = "daily";
@@ -48,7 +48,6 @@
     #};
     settings = {
       accept-flake-config = true;
-      access-tokens = "";
       allow-dirty = true;
       allow-import-from-derivation = true;
       allow-unsafe-native-code-during-evaluation = false;
@@ -71,13 +70,13 @@
       auto-allocate-uids = true;
       auto-optimise-store = true;
       build-dir = "/var/tmp/nix-build";
-      build-prefer-local = true;
+      #build-prefer-local = true;
       build-use-sandbox = true;
       builders-use-substitutes = true;
       build-users-group = "nixbld";
       compress-build-log = true;
       cores = 0;
-      connect-timeout = 30;
+      connect-timeout = 60;
       debugger-on-trace = false;
       download-attempts = 5;
       download-speed = 0;
@@ -98,11 +97,12 @@
         "parse-toml-timestamps"
         "repl-automation"
       ];
+      extra-sandbox-paths = [ "/proc" ];
       extra-trusted-public-keys = [
         "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
         "cache.flakehub.com-4:Asi8qIv291s0aYLyH6IOnr5Kf6+OF14WVjkE6t3xMio="
         "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+        #"cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "cache.iog.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
         "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -112,7 +112,7 @@
         "qnix:d/dwC2PX1o/KXVnuRbcMbNkTatKF59gZ6z4lWQtaonI="
       ];
       extra-substituters = [
-        "https://cache.garnix.io"
+        #"https://cache.garnix.io"
         "https://cache.iog.io"
         "https://cache.lix.systems"
         "https://cuda-maintainers.cachix.org"
@@ -164,7 +164,7 @@
       require-drop-supplementary-groups = true;
       require-sigs = true;
       restrict-eval = false;
-      retry-attempts = 1;
+      # retry-attempts = 1;
       sandbox = true;
       sandbox-build-dir = "/build";
       sandbox-dev-shm-size = "75%";
@@ -184,7 +184,7 @@
       substitute = true;
       substituters = [
         "https://cache.flox.dev"
-        "https://cache.garnix.io"
+        #"https://cache.garnix.io"
         "https://cache.iog.io"
         "https://cache.lix.systems"
         "https://cache.nixos.org"
@@ -211,7 +211,7 @@
       trust-tarballs-from-git-forges = true;
       trusted-public-keys = [
         "cache.flakehub.com-4:Asi8qIv291s0aYLyH6IOnr5Kf6+OF14WVjkE6t3xMio="
-        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+        #"cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "cache.iog.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "ghostty.cachix.org-1:WTrThZtR2ZuQirrZvrmRQKHehTOnBg9xZMQ6VIHdUso="
@@ -226,7 +226,7 @@
       trusted-substituters = [
         "https://bunker.cachix.org"
         "https://cache.nixos.org"
-        "https://cache.garnix.io"
+        #"https://cache.garnix.io"
         "https://hydra.nixos.org"
         "https://hyprland.cachix.org"
         "https://nix-community.cachix.org"

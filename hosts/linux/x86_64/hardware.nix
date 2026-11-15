@@ -32,17 +32,18 @@
       enable32Bit = true;
       extraPackages = with pkgs; [
         ab-av1
-        adaptivecppWithCuda
+        # adaptivecppWithCuda ##
         dxvk_2
+        egl-wayland
         envision
-        furmark
+        #furmark
         gpu-viewer
         gpufetch
         gpustat
         gputils
-        # gtk2
-        #gtk3
-        #gtk3-x11
+        #gtk2 ##broken?
+        # gtk3 ##broken?
+        #gtk3-x11 ##broken?
         gtk4
         gtkhash
         gtkmm2
@@ -61,13 +62,13 @@
         intel-media-driver
         intel-ocl
         kompute
-        khronos-ocl-icd-loader
-        #libappindicator-gtk3
+        #khronos-ocl-icd-loader # conflicts with ocl-icd
+        # libappindicator-gtk3 ##broken?
         libdbusmenu-gtk3
         libgbm
         libGLU
         libGLX
-        librealsenseWithCuda
+        # librealsenseWithCuda ## broken?
         libva
         libva-utils
         libvdpau-va-gl
@@ -75,14 +76,13 @@
         livekit
         lsfg-vk
         lsfg-vk-ui
-        memtest_vulkan
+        #memtest_vulkan # broken
         mesa
         mesa-demos
         mesa_glu
         mesa-gl-headers
         nvidia-vaapi-driver
-        nv-codec-headers
-        nv-codec-headers-12
+        nv-codec-headers-12 # can only have one nv-codec-headers package
         ocl-icd
         oneDNN
         opencl-caps-viewer
@@ -126,7 +126,7 @@
         vkd3d-proton
         vkdevicechooser
         vkdisplayinfo
-        vkdt
+        #vkdt
         #vkdt-wayland
         vkmark
         vlc
@@ -144,11 +144,20 @@
         vulkan-utility-libraries
         vulkan-validation-layers
         vulkan-volk
+        waybar
+        wayland
+        waylandpp
+        waylevel
+        wayland-logout
+        wayland-pipewire-idle-inhibit
+        wayland-protocols
+        wayland-scanner
         wayland-utils
         wivrn
         wgpu-native
         wgpu-utils
         wlx-overlay-s
+        xwayland
       ];
       extraPackages32 = with pkgs.pkgsi686Linux; [
         intel-media-driver
