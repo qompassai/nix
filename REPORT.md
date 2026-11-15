@@ -36,3 +36,27 @@ Tool note: obtaining ssh-to-age via nix shell unexpectedly proposed a toolchain 
 ## Stage 5 — mechanical security fixes
 Replaced root SSH password access with prohibit-password and disabled keyless SSH store serving, including dormant duplicate definitions to prevent unsafe reactivation. Files: hosts/linux/x86_64/nix.nix, hosts/linux/x86_64/services.nix, hosts/common/core/config.nix, modules/hosts/linux/x86_64/nix.nix, modules/hosts/linux/x86_64/services.nix, modules/hosts/common/core/config.nix, modules/common/core/nix.nix.
 Passwordless wheel sudo left AS IS (live security.nix and dormant definitions): Matt must decide. Other audit debt left unchanged: automatic-upgrade store path, formatter, Android system string, broad daemon access and sandbox exceptions, open firewall ports, duplicate settings, dead parse failures.
+
+## Stage 6 — final gates and completion
+
+| Check | Result |
+| --- | --- |
+| Exact requested primo drvPath eval, --no-write-lock-file | PASS: /nix/store/cqglfc050pi25gq2smznj69zkxvs1ixg-nixos-system-primo-25.11.20251124.5ae3b07.drv |
+| armhost eval | SKIPPED: retired; output names eval returns only primo |
+| nix-instantiate --parse, every touched .nix | PASS: 26/26; zero failures |
+| Requested secret-pattern sweep, all non-Git worktree files | PASS: 226 files, zero hits; values never emitted |
+| Adversarial sweep controls | PASS: all six requested classes detected in memory-only synthetic strings |
+| S1 exact-value check over new commit patches | PASS: zero occurrences across stages 1–5; values not emitted |
+| SSD lock byte equality | PASS |
+| Protected repo directories vs original HEAD | PASS: template/, topology/, packages/, nixos-installer/ unchanged |
+| sops filestatus secrets/primo.yaml | PASS: encrypted=true |
+| SOPS envelope vs policy | PASS: recipient matches, two encrypted fields and encrypted MAC |
+| Effective security settings eval | PASS: root SSH prohibit-password; store SSH enable/write/trusted false; mutableUsers false; two early hash files under /run/secrets-for-users |
+| Passwordless wheel sudo | Confirmed false for wheelNeedsPassword; deliberately preserved |
+| Additional git diff --check | FAIL: two SSD-source trailing-whitespace lines in hosts/linux/x86_64/services.nix (2, 141); left unchanged to avoid unrelated formatting |
+| Build, activation, runtime decryption | NOT RUN: eval-only scope; real secret population required |
+| LSP | .nix: not-LSP-validated (no theodolite route) |
+
+No custom skill materially used. No push, PR, remote changes, nix flake update, nixos-rebuild, or source-tree edits. No existing history rewritten. Six local stage commits including this report/gates commit. Pre-existing DIVERGENCE.md remains untracked and unchanged. Diff is ready for Pax review and Matt's push decision, with placeholders explicitly requiring provisioning before deployment.
+
+Open owner decisions: populate encrypted hashes and verify deployed host public key; decide passwordless sudo; manage S1 token revocation/history separately. Pre-existing formatter, Android output, auto-upgrade and other audit debt are outside this merge's eval gates.
