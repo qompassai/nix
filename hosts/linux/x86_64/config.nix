@@ -5,6 +5,7 @@
 { inputs, lib, ... }:
 {
   imports = [
+    ../../common/core/sops.nix
     ./boot.nix
     ./environment.nix
     ./hardware.nix

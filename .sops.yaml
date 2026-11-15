@@ -1,0 +1,8 @@
+# Primo: derived from /etc/ssh/ssh_host_ed25519_key.pub using ssh-to-age.
+keys:
+  - &primo age1534qzgmvkfv0d56zcta6ely6l9t50897s7jy45yx6j5ny4rleyhqyqjsk0
+creation_rules:
+  - path_regex: secrets/primo\.yaml$
+    key_groups:
+      - age:
+          - *primo

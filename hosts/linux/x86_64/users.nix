@@ -10,7 +10,7 @@
 }:
 {
   users = {
-    mutableUsers = true;
+    mutableUsers = false;
     users."${username}" = {
       homeMode = "755";
       isNormalUser = true;

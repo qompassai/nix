@@ -48,7 +48,6 @@
     #};
     settings = {
       accept-flake-config = true;
-      access-tokens = "";
       allow-dirty = true;
       allow-import-from-derivation = true;
       allow-unsafe-native-code-during-evaluation = false;
