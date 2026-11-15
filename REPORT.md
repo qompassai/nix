@@ -20,3 +20,6 @@ All repo-only template/, topology/, packages/, nixos-installer/ files preserved.
 - SSD wins (live): configuration.nix, flake.lock, flake.nix; hosts/linux/x86_64/{boot,config,environment,hardware,misc,nix,programs,security,services,users,variables,xdg}.nix; overlays/{default,x86_64}.nix; treefmt.nix.
 - Repo retained (outside SSD live closure): checks.nix; hosts/linux/x86_64/{default,devshells,packages}.nix; modules/common/core/pkgs.nix.
 SSD additions: devshells.nix, modules/modules-list.nix and hosts/linux/x86_64/packages/core.nix. No bulk copy of dead SSD modules or credential-bearing nix.conf.
+
+## Stage 3 — eval breakers
+Primo base drvPath eval PASSED: /nix/store/97ij117vqdr6j969h5vjk80xqlcajkgj-nixos-system-primo-25.11.20251124.5ae3b07.drv. Locked nixpkgs attribute probe: oneDNN=true, onednn=false. SSD hardware uses the name valid at this lock; no speculative rename. Armhost output retired: no deployed ARM hardware base supplied; pointing it at SSD modules-list would import primo x86_64 configuration. ARM source files retained.
