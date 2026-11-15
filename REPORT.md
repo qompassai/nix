@@ -32,3 +32,7 @@ Live common sops module now imports declared sops-nix and local secrets/primo.ya
 lib/mkSystem.nix does not exist in this repo or final tree. Its dead SSD helper (with unsafe fallback and unrelated undeclared inputs) was deliberately not copied. No such fallback exists in merged tree.
 
 Tool note: obtaining ssh-to-age via nix shell unexpectedly proposed a toolchain build; interrupted it, no system build or rebuild run. Instead ran upstream cached source with system Go and cached vendor dependencies outside repo. Primary references: locked sops-nix README and module option declarations; locked nixpkgs attribute eval; upstream ssh-to-age CLI source; installed sops help.
+
+## Stage 5 — mechanical security fixes
+Replaced root SSH password access with prohibit-password and disabled keyless SSH store serving, including dormant duplicate definitions to prevent unsafe reactivation. Files: hosts/linux/x86_64/nix.nix, hosts/linux/x86_64/services.nix, hosts/common/core/config.nix, modules/hosts/linux/x86_64/nix.nix, modules/hosts/linux/x86_64/services.nix, modules/hosts/common/core/config.nix, modules/common/core/nix.nix.
+Passwordless wheel sudo left AS IS (live security.nix and dormant definitions): Matt must decide. Other audit debt left unchanged: automatic-upgrade store path, formatter, Android system string, broad daemon access and sandbox exceptions, open firewall ports, duplicate settings, dead parse failures.

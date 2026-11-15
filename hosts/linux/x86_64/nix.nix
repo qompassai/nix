@@ -248,10 +248,10 @@
       warn-large-path-threshold = 0;
     };
     sshServe = {
-      enable = true;
+      enable = false;
       protocol = "ssh";
-      trusted = true;
-      write = true;
+      trusted = false;
+      write = false;
     };
   };
 }

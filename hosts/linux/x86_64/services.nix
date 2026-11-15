@@ -75,7 +75,7 @@
         2342
       ];
       settings = {
-        PermitRootLogin = "yes";
+        PermitRootLogin = "prohibit-password";
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;
         AllowUsers = [ "phaedrus" ];

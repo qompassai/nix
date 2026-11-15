@@ -77,10 +77,10 @@ let
       warn-dirty = false;
     };
     sshServe = {
-      enable = true;
+      enable = false;
       protocol = "ssh";
-      trusted = true;
-      write = true;
+      trusted = false;
+      write = false;
     };
   };
   nixTable = {
