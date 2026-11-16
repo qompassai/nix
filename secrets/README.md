@@ -17,3 +17,14 @@ No ARM recipient is defined because armhost is retired.
 Authenticated GitHub fetching is disabled. Public inputs work without a PAT.
 lib/mkSystem.nix is absent: the unused SSD helper with a plaintext fallback was
 not imported. The live users use sops password hash files exclusively.
+
+## ds920plus.yaml
+
+Placeholder only, landed with the DS920+ host module under D-1600
+(2026-11-16). It was encrypted to a THROWAWAY age recipient whose private
+key was destroyed at creation time, so its values are unrecoverable by
+design and the file must never be treated as decryptable. At install time:
+derive the real recipient from the DS920+'s own SSH host key with
+ssh-to-age, replace the ds920plus anchor and creation rule in .sops.yaml,
+and recreate this file with real password hashes before storing any real
+value in it.

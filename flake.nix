@@ -219,6 +219,19 @@
             inputs.lix-module.nixosModules.default
           ];
         };
+        # DS920+ NAS host (D-1600, 2026-11-16). Single-file host module;
+        # users and fileSystems are install-time (see the module header).
+        ds920plus = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit self inputs;
+            username = "phaedrus";
+          };
+          modules = [
+            ./hosts/linux/x86_64/ds920plus.nix
+            inputs.lix-module.nixosModules.default
+          ];
+        };
       };
     };
 }

@@ -1,8 +1,19 @@
 # Primo: derived from /etc/ssh/ssh_host_ed25519_key.pub using ssh-to-age.
+# DS920+: PLACEHOLDER recipient — a throwaway age key generated 2026-11-16
+# whose private key was destroyed immediately after encrypting the
+# placeholder file. It decrypts nothing that matters and must be REPLACED
+# at install time with the recipient derived from the DS920+'s own SSH
+# host key (ssh-to-age) before any real value is stored. See
+# secrets/README.md.
 keys:
   - &primo age1534qzgmvkfv0d56zcta6ely6l9t50897s7jy45yx6j5ny4rleyhqyqjsk0
+  - &ds920plus age1rtwfqx58fdus7vvjdvkhhcgeu8xr0q7x5gnpcuwh5j8g2afp7fdqhazrz0
 creation_rules:
   - path_regex: secrets/primo\.yaml$
     key_groups:
       - age:
           - *primo
+  - path_regex: secrets/ds920plus\.yaml$
+    key_groups:
+      - age:
+          - *ds920plus
